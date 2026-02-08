@@ -1,7 +1,7 @@
 ---
 hero:
   title: About Us
-  subtitle: lol
+  subtitle: This is The Air Force School Hindan
 pgtFaculty:
   - {}
   - {}
