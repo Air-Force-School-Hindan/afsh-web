@@ -24,34 +24,26 @@ const defaultSlides: ParallaxSlide[] = [
     {
         id: 1,
         imageUrl: '/img/IAF_Garud_commando.jpg',
-        title: 'Guardians of the Sky',
-        subtitle: 'Elite Garud Commando Force',
-        buttonText: 'Join Us',
-        buttonLink: '/admissions'
+        title: 'Excellence in Education',
+        subtitle: 'Nurturing the future leaders of tomorrow',
+        buttonText: 'About Us',
+        buttonLink: '/about'
     },
     {
         id: 2,
         imageUrl: '/img/wp5534129-lca-tejas-wallpapers.jpg',
-        title: 'LCA Tejas',
-        subtitle: 'Pride of Indian Aviation',
-        buttonText: 'Our Fleet',
+        title: 'Holistic Development',
+        subtitle: 'Sports, Arts, and Academics in perfect harmony',
+        buttonText: 'Our Campus',
         buttonLink: '/academics'
     },
     {
         id: 3,
         imageUrl: '/img/wp6738688-indian-air-force-desktop-wallpapers.jpg',
-        title: 'Sky Warriors',
-        subtitle: 'Defending the Skies with Valor',
-        buttonText: 'Learn More',
-        buttonLink: '/about'
-    },
-    {
-        id: 4,
-        imageUrl: '/img/wp6739097-indian-air-force-desktop-wallpapers.jpg',
-        title: 'Air Superiority',
-        subtitle: 'Touch the Sky with Glory',
-        buttonText: 'Gallery',
-        buttonLink: '/gallery'
+        title: 'State of the Art Facilities',
+        subtitle: 'Providing the best environment for learning',
+        buttonText: 'Admissions',
+        buttonLink: '/admissions'
     }
 ];
 
