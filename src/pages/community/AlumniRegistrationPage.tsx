@@ -5,33 +5,12 @@ import { GraduationCap, ArrowLeft, CheckCircle, Mail, Phone, MapPin, Calendar, B
 import Silk from '../../components/ui/Silk';
 import PageAnimate from '../../components/ui/PageAnimate';
 import { fadeInUp, fadeIn, scaleIn } from '../../utils/animations';
+import { AlumniFormData } from '../../types/alumni';
+import { registerAlumni } from '../../services/alumniService';
 
 
 const AlumniRegistrationPage: React.FC = () => {
   const navigate = useNavigate();
-
-  // Local interface for form data
-  interface AlumniFormData {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    batchYear: string;
-    passingYear: string;
-    currentOccupation: string;
-    company: string;
-    designation: string;
-    address: string;
-    city: string;
-    state: string;
-    country: string;
-    pinCode: string;
-    linkedInProfile: string;
-    achievements: string;
-    message: string;
-    allowContact: boolean;
-    newsletter: boolean;
-  }
 
   const [formData, setFormData] = useState<AlumniFormData>({
     firstName: '',
@@ -105,7 +84,7 @@ const AlumniRegistrationPage: React.FC = () => {
     return Object.keys(errors).length === 0;
   };
 
-   const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
@@ -117,23 +96,14 @@ const AlumniRegistrationPage: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(
-        "https://web-production-9adf5.up.railway.app/api/alumni/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await registerAlumni(formData);
 
-      if (!response.ok) {
-        throw new Error("Failed to submit form");
+      if (response.success || response.message) {
+        alert(response.message || "Alumni registered successfully 🎉");
+        navigate("/alumni");
+      } else {
+        throw new Error(response.error || "Failed to submit form");
       }
-
-      alert("Alumni registered successfully 🎉");
-      navigate("/alumni");
 
     } catch (err: any) {
       setError(err.message || "Something went wrong");
