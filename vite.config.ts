@@ -40,10 +40,6 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         '@': path.resolve(process.cwd(), './'),
-        'node:fs': path.resolve(process.cwd(), 'src/utils/node-stub.ts'),
-        'node:path': path.resolve(process.cwd(), 'src/utils/node-stub.ts'),
-        'node:os': path.resolve(process.cwd(), 'src/utils/node-stub.ts'),
-        'node:crypto': path.resolve(process.cwd(), 'src/utils/node-stub.ts'),
       },
     },
   };
