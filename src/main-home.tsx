@@ -72,6 +72,9 @@ root.render(
                     {/* Status Redirect - Outside Layout */}
                     <Route path="/status" element={<ExternalRedirect to="https://dashboard.uptimerobot.com/monitors" />} />
 
+                    {/* Strapi Redirect - Outside Layout */}
+                    <Route path="/strapi" element={<ExternalRedirect to="https://afsh-backend-blog-production.up.railway.app/" />} />
+
                     {/* All other routes wrapped in Layout */}
                     <Route path="*" element={
                         <Layout>
