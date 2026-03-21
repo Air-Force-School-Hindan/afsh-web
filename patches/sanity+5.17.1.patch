@@ -1,0 +1,17 @@
+diff --git a/node_modules/sanity/lib/index.js b/node_modules/sanity/lib/index.js
+index 84da003..b67c571 100644
+--- a/node_modules/sanity/lib/index.js
++++ b/node_modules/sanity/lib/index.js
+@@ -80967,11 +80967,7 @@ function resolveSource$1({
+   }, wrappedClient = client;
+   context.client = [...Object.keys(client), ...Object.keys(wrappedClient.__proto__)].reduce((acc, key) => {
+     const original = Object.hasOwnProperty.call(client, key) ? wrappedClient[key] : wrappedClient.__proto__[key];
+-    return Object.defineProperty(acc, key, {
+-      get() {
+-        return console.warn('`configContext.client` is deprecated and will be removed in the next release! Use `context.getClient({apiVersion: "2021-06-07"})` instead'), original;
+-      }
+-    });
++    return Object.defineProperty(acc, key, { get() { return original; } });
+   }, {});
+   const defaultAssetSources = createDatasetAssetSources(config, context.client), mediaLibraryAssetSources = createMediaLibraryAssetSources(config);
+   let templates;
