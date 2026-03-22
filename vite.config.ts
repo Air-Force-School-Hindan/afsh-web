@@ -5,18 +5,14 @@ import path from 'path';
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
-  const processEnv = {
-    NODE_ENV: mode,
-    GITHUB_BRANCH: env.GITHUB_BRANCH || env.CF_PAGES_BRANCH,
-    VERCEL_GIT_COMMIT_REF: env.VERCEL_GIT_COMMIT_REF,
-    HEAD: env.HEAD,
-    NEXT_PUBLIC_TINA_CLIENT_ID: env.NEXT_PUBLIC_TINA_CLIENT_ID,
-    TINA_TOKEN: env.TINA_TOKEN,
-  };
-
   return {
     define: {
-      'process.env': JSON.stringify(processEnv),
+      'process.env.NODE_ENV': JSON.stringify(mode),
+      'process.env.GITHUB_BRANCH': JSON.stringify(env.GITHUB_BRANCH || env.CF_PAGES_BRANCH),
+      'process.env.VERCEL_GIT_COMMIT_REF': JSON.stringify(env.VERCEL_GIT_COMMIT_REF),
+      'process.env.HEAD': JSON.stringify(env.HEAD),
+      'process.env.NEXT_PUBLIC_TINA_CLIENT_ID': JSON.stringify(env.NEXT_PUBLIC_TINA_CLIENT_ID),
+      'process.env.TINA_TOKEN': JSON.stringify(env.TINA_TOKEN),
     },
     server: {
       host: '0.0.0.0',
