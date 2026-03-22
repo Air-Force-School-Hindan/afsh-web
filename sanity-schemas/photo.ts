@@ -14,7 +14,7 @@ export default {
       type: 'image',
       options: {
         hotspot: true,
-        metadata: ['lqip', 'palette', 'dimensions'],
+        metadata: ['lqip', 'palette'],
       },
       validation: (Rule: any) => Rule.required(),
     },
