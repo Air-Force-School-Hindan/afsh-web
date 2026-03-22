@@ -41,8 +41,6 @@ This is the repository of the website of Air Force School Hindan. This Website i
 
 ## Make it work, make it right, make it fast.
 
----
-
 ## Deployed Using -> Frontend- Cloudflare   Backend- Railway
 
 ---
