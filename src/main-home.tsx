@@ -2,6 +2,7 @@ import React, { Suspense, lazy, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
+import './assets/main.css';
 import Layout from './components/layout/Layout';
 
 // Lazy load page components for code splitting
