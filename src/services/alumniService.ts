@@ -1,6 +1,6 @@
 import { AlumniFormData, AlumniRegistrationResponse } from '../types/alumni';
 
-const API_URL = import.meta.env.VITE_ALUMNI_API_URL || "https://web-production-9adf5.up.railway.app/api/alumni/register";
+const API_URL = import.meta.env.VITE_ALUMNI_API_URL || "https://form-backend-afsh-web.up.railway.app/api/alumni/register";
 
 export const registerAlumni = async (data: AlumniFormData): Promise<AlumniRegistrationResponse> => {
   try {
