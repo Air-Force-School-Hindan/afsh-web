@@ -193,13 +193,13 @@ This is the repository of the website of Air Force School Hindan. This Website i
 
 ## Team
 
-- Aryan Rajput
-- Anagh Singh
+- Aryan Rajput -> Class 12th
+- Anagh Singh -> Class 8th
 
 ---
 
-## Make it work, make it right, make it fast.
+## Mindset= Make it work, make it right, make it fast.
 
-## Deployed Using -> Frontend- Cloudflare   Backend- Railway
+## Deployed Using => Frontend- Cloudflare   Backend- Railway
 
 ---
