@@ -1,4 +1,4 @@
-# AFSH Website 
+# AFSH Website Demo
 
 This is the repository of the website of Air Force School Hindan. This Website is built by students of this school for the school.
 
