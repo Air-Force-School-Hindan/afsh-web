@@ -65,7 +65,7 @@ const AdmissionPage: React.FC = () => {
 
     try {
       const res = await fetch(
-        "https://form-backend-afsh-web-production.up.railway.app/api/admission/inquiry",
+        "https://form-backend-afsh-web.up.railway.app/api/admission/inquiry",
         {
           method: "POST",
           headers: {
