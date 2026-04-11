@@ -31,7 +31,7 @@ const ContactPage: React.FC = () => {
 
     try {
       const res = await fetch(
-        "https://form-backend-afsh-web-production.up.railway.app/api/contact/submit",
+        "https://form-backend-afsh-web.up.railway.app/api/contact/submit",
         {
           method: "POST",
           headers: {
