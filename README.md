@@ -189,8 +189,6 @@ This is the repository of the website of Air Force School Hindan. This Website i
 - Search Feature For Finding Pages Quickly
 - Dark Mode and Modern Design With Decent User Experience
 
----
-
 ## Team
 
 - Aryan Rajput -> Class 12th
@@ -201,5 +199,4 @@ This is the repository of the website of Air Force School Hindan. This Website i
 ## Mindset= Make it work, make it right, make it fast.
 
 ## Deployed Using => Frontend- Cloudflare   Backend- Railway
-
 ---
