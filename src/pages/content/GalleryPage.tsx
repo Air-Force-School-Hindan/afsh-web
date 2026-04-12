@@ -2,10 +2,8 @@ import React, { useState, useMemo, useEffect } from "react";
 import PhotoAlbum from "react-photo-album";
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
-import Captions from "yet-another-react-lightbox/plugins/captions";
 import "react-photo-album/rows.css";
 import "yet-another-react-lightbox/styles.css";
-import "yet-another-react-lightbox/plugins/captions.css";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Filter,
@@ -16,12 +14,14 @@ import {
   ArrowUpDown,
   ChevronLeft,
   ChevronRight,
-  Loader2
+  Loader2,
+  Info
 } from "lucide-react";
 
 import { fetchGalleryData, Photo } from "@/src/services/sanityGalleryService";
 import Silk from '@/src/components/ui/Silk';
 import PageAnimate from '../../components/ui/PageAnimate';
+import { useSpring, animated } from "@react-spring/web";
 
 // --- Types ---
 type ViewMode = 'photos' | 'albums';
@@ -179,6 +179,7 @@ const GalleryPage = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [index, setIndex] = useState(-1);
   const [currentPage, setCurrentPage] = useState(1);
+  const [showInfo, setShowInfo] = useState(false);
   const itemsPerPage = 20;
 
   // Filter States
@@ -202,6 +203,12 @@ const GalleryPage = () => {
     const y = new Set(galleryData.map(p => p.date.split('-')[0]));
     return Array.from(y).sort().reverse();
   }, [galleryData]);
+
+  const infoSpring = useSpring({
+    opacity: showInfo ? 1 : 0,
+    transform: showInfo ? "translateY(0)" : "translateY(20px)",
+    config: { tension: 300, friction: 30 },
+  });
 
   const filteredPhotos = useMemo(() => {
     let data = [...galleryData];
@@ -456,10 +463,42 @@ const GalleryPage = () => {
         index={index}
         close={() => setIndex(-1)}
         slides={slides}
-        plugins={[Zoom, Captions]}
-        captions={{
-          showToggle: true,
-          descriptionTextAlign: "center",
+        plugins={[Zoom]}
+        zoom={{
+          scrollToZoom: true,
+        }}
+        toolbar={{
+          buttons: [
+            <button
+              key="info"
+              type="button"
+              className="yarl__button"
+              onClick={() => setShowInfo((prev) => !prev)}
+              title="Info"
+            >
+              <Info size={24} />
+            </button>,
+            "zoom",
+            "close",
+          ],
+        }}
+        on={{
+          view: () => setShowInfo(false),
+        }}
+        render={{
+          slideFooter: () => {
+            const slide = slides[index];
+            if (!slide) return null;
+            return (
+              <animated.div
+                style={infoSpring}
+                className={`absolute bottom-6 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:right-auto md:w-[500px] md:max-w-[90vw] bg-black/80 backdrop-blur-md p-5 rounded-2xl text-white shadow-2xl z-50 border border-white/10 transition-all ${showInfo ? 'pointer-events-auto' : 'pointer-events-none'}`}
+              >
+                <h3 className="font-bold text-lg mb-2">{slide.title}</h3>
+                <p className="text-sm text-gray-300">{slide.description}</p>
+              </animated.div>
+            );
+          },
         }}
       />
 
