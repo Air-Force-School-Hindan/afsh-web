@@ -200,7 +200,7 @@ const Header: React.FC<HeaderProps> = ({ user, onLoginClick, onLogout, onNavigat
             className="flex items-center gap-3 group cursor-pointer"
           >
             <img
-              src="https://ecolearn.pages.dev/img/logo.png"
+              src="/logo.png"
               alt="Air Force School Logo"
               className="w-14 h-14 object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-md"
             />
@@ -346,7 +346,7 @@ const Header: React.FC<HeaderProps> = ({ user, onLoginClick, onLogout, onNavigat
           >
             <div className="flex justify-between items-center p-6 border-b border-gray-100 dark:border-gray-800">
               <div className="flex items-center gap-2">
-                <img src="https://ecolearn.pages.dev/img/logo.png" alt="AF" className="w-10 h-10 object-contain" />
+                <img src="/logo.png" alt="AF" className="w-10 h-10 object-contain" />
                 <span className="font-serif font-bold text-lg uppercase dark:text-white">Menu</span>
               </div>
               <button
