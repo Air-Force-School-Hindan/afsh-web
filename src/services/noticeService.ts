@@ -1,6 +1,6 @@
 import { StrapiResponse, Notice } from '../types/strapi';
 
-const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337'; // Fallback or use env
+const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || (import.meta.env.DEV ? 'http://localhost:1337' : ''); // Fallback or use env
 
 export const fetchNotices = async (page = 1, pageSize = 25): Promise<StrapiResponse<Notice[]>> => {
   try {

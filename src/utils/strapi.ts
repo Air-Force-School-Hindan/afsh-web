@@ -1,5 +1,5 @@
 export const getStrapiURL = (path = '') => {
-    const baseURL = import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337';
+    const baseURL = import.meta.env.VITE_STRAPI_URL || (import.meta.env.DEV ? 'http://localhost:1337' : '');
     // Remove trailing slash from base and leading slash from path to avoid double slashes
     const cleanBase = baseURL.replace(/\/$/, '');
     const cleanPath = path.replace(/^\//, '');
