@@ -1,8 +1,11 @@
 import React, { useState, useMemo, useEffect } from "react";
 import PhotoAlbum from "react-photo-album";
 import Lightbox from "yet-another-react-lightbox";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import Captions from "yet-another-react-lightbox/plugins/captions";
 import "react-photo-album/rows.css";
 import "yet-another-react-lightbox/styles.css";
+import "yet-another-react-lightbox/plugins/captions.css";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Filter,
@@ -453,6 +456,11 @@ const GalleryPage = () => {
         index={index}
         close={() => setIndex(-1)}
         slides={slides}
+        plugins={[Zoom, Captions]}
+        captions={{
+          showToggle: true,
+          descriptionTextAlign: "center",
+        }}
       />
 
       {/* Filter Sidebar */}
