@@ -126,7 +126,6 @@ const slideInFromRight = {
 
 const CalendarPageNew: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [googleEvents, setGoogleEvents] = useState<CalendarEvent[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -138,7 +137,14 @@ const CalendarPageNew: React.FC = () => {
   // Auto-fetch public calendar events on mount
   React.useEffect(() => {
     if (apiKey && publicCalendarIds) {
-      const calendarIds = publicCalendarIds.split(',').map((id: string) => id.trim().replace(/^['"]|['"]$/g, '')); // Remove extra quotes if present
+      // De-duplicate and trim calendar IDs
+      const calendarIds = Array.from(new Set(
+        publicCalendarIds.split(',')
+          .map((id: string) => id.trim().replace(/^['"]|['"]$/g, ''))
+          .filter(Boolean)
+      ));
+
+      const timeMin = new Date(new Date().getFullYear(), 0, 1).toISOString();
 
       const fetchPublicEvents = async () => {
         try {
@@ -149,7 +155,7 @@ const CalendarPageNew: React.FC = () => {
                 {
                   params: {
                     key: apiKey,
-                    timeMin: new Date(new Date().getFullYear(), 0, 1).toISOString(),
+                    timeMin,
                     showDeleted: false,
                     singleEvents: true,
                     orderBy: 'startTime',
@@ -194,7 +200,6 @@ const CalendarPageNew: React.FC = () => {
             }
           });
 
-          setGoogleEvents(allNewEvents);
           // Merge with initial hardcoded events (deduplication logic skipped for simplicity, but could be added based on ID)
           setEvents(allNewEvents);
         } catch (error: any) {
@@ -224,7 +229,27 @@ const CalendarPageNew: React.FC = () => {
     return days;
   }, [currentDate]);
 
-  const getEventsForDate = (day: number) => events.filter(e => e.date === day && e.month === currentDate.getMonth() && e.year === currentDate.getFullYear());
+  // Optimize event lookup by grouping events by date
+  const eventsByDate = useMemo(() => {
+    const grouped: Record<string, CalendarEvent[]> = {};
+    events.forEach(event => {
+      const key = `${event.year}-${event.month}-${event.date}`;
+      if (!grouped[key]) grouped[key] = [];
+      grouped[key].push(event);
+    });
+    return grouped;
+  }, [events]);
+
+  const memoizedUpcomingEvents = useMemo(() => {
+    return events
+      .filter(e => e.month === currentDate.getMonth() && e.year === currentDate.getFullYear())
+      .sort((a, b) => a.date - b.date);
+  }, [events, currentDate]);
+
+  const getEventsForDate = (day: number) => {
+    const key = `${currentDate.getFullYear()}-${currentDate.getMonth()}-${day}`;
+    return eventsByDate[key] || [];
+  };
 
   const prevMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1));
   const nextMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1));
@@ -302,7 +327,7 @@ const CalendarPageNew: React.FC = () => {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           date={selectedDate}
-          events={getEventsForDate(selectedDate.getDate()).filter(e => e.month === selectedDate.getMonth() && e.year === selectedDate.getFullYear())}
+          events={getEventsForDate(selectedDate.getDate())}
         />
       )}
 
@@ -431,10 +456,7 @@ const CalendarPageNew: React.FC = () => {
         >
           <h3 className="text-2xl font-serif font-bold text-gray-900 dark:text-white mb-6">Upcoming Events This Month</h3>
           <div className="space-y-3">
-            {events
-              .filter(e => e.month === currentDate.getMonth() && e.year === currentDate.getFullYear())
-              .sort((a, b) => a.date - b.date)
-              .map((event, idx) => (
+            {memoizedUpcomingEvents.map((event, idx) => (
                 <motion.div
                   key={idx}
                   className={`p-4 rounded-lg border-l-4 flex items-center justify-between transition-all duration-300 ${event.color}`}
