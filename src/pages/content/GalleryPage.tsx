@@ -497,7 +497,7 @@ const GalleryPage = () => {
           controls: () => (
             <animated.div
               style={infoSpring}
-              className={`fixed bottom-10 left-1/2 -translate-x-1/2 w-[90vw] max-w-[500px] bg-black/80 backdrop-blur-md p-5 rounded-2xl text-white shadow-2xl z-[1000] border border-white/10 transition-all ${showInfo ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+               className={`fixed bottom-6 left-0 right-0 mx-auto w-[90vw] max-w-[500px] bg-black/80 backdrop-blur-md p-5 rounded-2xl text-white shadow-2xl z-50 border border-white/10 transition-all ${showInfo ? 'pointer-events-auto' : 'pointer-events-none'}`}
             >
               {index >= 0 && slides[index] && (
                 <>
