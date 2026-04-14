@@ -15,3 +15,9 @@
 **Vulnerability:** Potential information leakage via verbose API error logging in production and insecure HTTP fallback for backend communication if environment variables are missing.
 **Learning:** Hardcoding fallbacks to localhost in production code can lead to insecure connection attempts or application failure. Duplicating these fallbacks across multiple files increases maintenance risk.
 **Prevention:** Centralize backend configuration and use environment-aware helpers (e.g., `import.meta.env.DEV`) to ensure secure defaults in production while maintaining development flexibility. Restrict verbose logging to development environments.
+
+## 2026-04-14 - [Security Enhancement] Centralized Secure Error Handling
+
+**Vulnerability:** Information leakage through unmediated `console.error` calls and verbose error messages in production. Multiple components were logging raw error objects, potentially exposing internal system structure or stack traces.
+**Learning:** Scatter-shot error handling across multiple UI components leads to inconsistent security postures and increased maintenance risk. Relying on local `try/catch` without a centralized strategy makes it easy to accidentally leak sensitive data.
+**Prevention:** Implement a centralized security utility (`src/utils/security.ts`) for all non-intercepted error logging and UI feedback. This ensures that production logs are consistently sanitized while maintaining detailed context for development.

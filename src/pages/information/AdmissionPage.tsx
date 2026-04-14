@@ -6,6 +6,7 @@ import Silk from '@/src/components/ui/Silk';
 import PageAnimate from '../../components/ui/PageAnimate';
 import { fadeInUp } from '../../utils/animations';
 import { useTinaPage } from '@/src/hooks/useTinaPage';
+import { logErrorSecurely } from '@/src/utils/security';
 
 interface FormData {
   name: string;
@@ -74,9 +75,24 @@ const AdmissionPage: React.FC = () => {
           body: JSON.stringify(formData),
         }
       );
+
+      const data = await res.json();
+      if (data.success) {
+        setSubmitted(true);
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          class: '',
+          guardianName: '',
+          message: ''
+        });
+      } else {
+        alert(data.message || "Something went wrong. Please try again later.");
+      }
     } catch (err) {
-      console.error(err);
-      alert("Server error");
+      logErrorSecurely("Admission Inquiry", err);
+      alert("Server error. Please try again later.");
     }
   };
 
