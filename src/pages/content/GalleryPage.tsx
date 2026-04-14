@@ -469,7 +469,7 @@ const GalleryPage = () => {
         slides={slides}
         plugins={[Zoom]}
         zoom={{
-          ref: zoomRef,
+          // ref: zoomRef,
           scrollToZoom: true,
           maxZoomPixelRatio: 5,
         }}
