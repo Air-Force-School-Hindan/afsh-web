@@ -180,7 +180,7 @@ const GalleryPage = () => {
   const [index, setIndex] = useState(-1);
   const [currentPage, setCurrentPage] = useState(1);
   const [showInfo, setShowInfo] = useState(false);
-  const zoomRef = React.useRef<any>(null);
+  // const zoomRef = React.useRef<any>(null);
   const itemsPerPage = 20;
 
   // Filter States
