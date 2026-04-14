@@ -174,28 +174,31 @@ const CalendarPageNew: React.FC = () => {
           const allNewEvents: CalendarEvent[] = [];
 
           results.forEach((data, index) => {
-            if (data && data.items) {
+            if (data && Array.isArray(data.items)) {
               const calendarId = calendarIds[index];
-              const isHoliday = calendarId.includes('holiday') || calendarId.includes('en.indian');
+              const isHoliday = calendarId.toLowerCase().includes('holiday') ||
+                               calendarId.toLowerCase().includes('en.indian');
 
-              const calendarEvents = data.items.map((event: any) => {
-                const startDate = new Date(event.start.dateTime || event.start.date);
-                const isAllDay = !event.start.dateTime;
+              const calendarEvents = data.items
+                .filter((event: any) => event && event.start && (event.start.dateTime || event.start.date))
+                .map((event: any) => {
+                  const startDate = new Date(event.start.dateTime || event.start.date);
+                  const isAllDay = !event.start.dateTime;
 
-                return {
-                  date: startDate.getDate(),
-                  month: startDate.getMonth(),
-                  year: startDate.getFullYear(),
-                  title: event.summary,
-                  type: isHoliday ? 'holiday' : 'event',
-                  color: isHoliday
-                    ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300'
-                    : 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300',
-                  startTime: event.start.dateTime || event.start.date,
-                  endTime: event.end.dateTime || event.end.date,
-                  allDay: isAllDay
-                };
-              });
+                  return {
+                    date: startDate.getDate(),
+                    month: startDate.getMonth(),
+                    year: startDate.getFullYear(),
+                    title: event.summary || 'Untitled Event',
+                    type: isHoliday ? 'holiday' : 'event',
+                    color: isHoliday
+                      ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300'
+                      : 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300',
+                    startTime: event.start.dateTime || event.start.date,
+                    endTime: event.end?.dateTime || event.end?.date || event.start.dateTime || event.start.date,
+                    allDay: isAllDay
+                  };
+                });
               allNewEvents.push(...calendarEvents);
             }
           });
@@ -307,9 +310,16 @@ const CalendarPageNew: React.FC = () => {
             transition={{ delay: 0.6 }}
           >
             {(!apiKey || !publicCalendarIds) ? (
-              <p className="text-sm font-semibold text-red-400 bg-red-900/20 px-4 py-2 rounded-full inline-block">
-                ⚠️ API Key or Public Calendar ID missing in .env
-              </p>
+              <div className="bg-red-500/10 border border-red-500/50 backdrop-blur-md rounded-2xl p-6 max-w-2xl mx-auto shadow-xl">
+                <p className="text-red-200 font-bold mb-2 flex items-center justify-center gap-2">
+                  <X className="w-5 h-5 bg-red-500 rounded-full text-white p-1" />
+                  Calendar Configuration Missing
+                </p>
+                <p className="text-red-100/70 text-sm">
+                  The Google Calendar API key or Public Calendar ID is not configured in your environment variables.
+                  Please refer to the setup guide to enable the academic calendar.
+                </p>
+              </div>
             ) : (
               <div className="flex flex-col gap-2 items-center">
                 <div className="text-sm font-semibold text-af-blue dark:text-blue-200 bg-white/10 px-6 py-2 rounded-full inline-block border border-white/20">
