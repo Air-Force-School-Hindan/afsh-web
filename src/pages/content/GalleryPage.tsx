@@ -180,6 +180,7 @@ const GalleryPage = () => {
   const [index, setIndex] = useState(-1);
   const [currentPage, setCurrentPage] = useState(1);
   const [showInfo, setShowInfo] = useState(false);
+  const zoomRef = React.useRef<any>(null);
   const itemsPerPage = 20;
 
   // Filter States
@@ -465,6 +466,7 @@ const GalleryPage = () => {
         slides={slides}
         plugins={[Zoom]}
         zoom={{
+          ref: zoomRef,
           scrollToZoom: true,
         }}
         toolbar={{
@@ -483,6 +485,9 @@ const GalleryPage = () => {
         }}
         on={{
           view: () => setShowInfo(false),
+          click: () => {
+            zoomRef.current?.zoomIn();
+          },
         }}
         render={{
           buttonZoom: () => null,
@@ -491,7 +496,7 @@ const GalleryPage = () => {
             return (
               <animated.div
                 style={infoSpring}
-                className={`absolute bottom-6 left-1/2 -translate-x-1/2 w-[90vw] max-w-[500px] bg-black/80 backdrop-blur-md p-5 rounded-2xl text-white shadow-2xl z-50 border border-white/10 transition-all ${showInfo ? 'pointer-events-auto' : 'pointer-events-none'}`}
+                className={`fixed bottom-6 left-0 right-0 mx-auto w-[90vw] max-w-[500px] bg-black/80 backdrop-blur-md p-5 rounded-2xl text-white shadow-2xl z-50 border border-white/10 transition-all ${showInfo ? 'pointer-events-auto' : 'pointer-events-none'}`}
               >
                 <h3 className="font-bold text-lg mb-2 text-center">{slide.title}</h3>
                 <p className="text-sm text-gray-300 text-center">{slide.description}</p>
