@@ -9,3 +9,9 @@
 **Vulnerability:** Potentially missing `rel="noopener noreferrer"` on external links with `target="_blank"`, leading to Tabnabbing vulnerabilities.
 **Learning:** Modern browsers increasingly apply `rel="noopener"` by default for `target="_blank"`, and this codebase was already consistently using `rel="noopener noreferrer"` across all relevant components.
 **Prevention:** Continue to use linting or automated checks to ensure all new external links follow this security best practice.
+
+## 2026-04-13 - [Security Enhancement] Secure API Configuration and Error Handling
+
+**Vulnerability:** Potential information leakage via verbose API error logging in production and insecure HTTP fallback for backend communication if environment variables are missing.
+**Learning:** Hardcoding fallbacks to localhost in production code can lead to insecure connection attempts or application failure. Duplicating these fallbacks across multiple files increases maintenance risk.
+**Prevention:** Centralize backend configuration and use environment-aware helpers (e.g., `import.meta.env.DEV`) to ensure secure defaults in production while maintaining development flexibility. Restrict verbose logging to development environments.
