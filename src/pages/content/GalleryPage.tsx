@@ -467,9 +467,6 @@ const GalleryPage = () => {
         zoom={{
           scrollToZoom: true,
         }}
-        styles={{
-          container: { cursor: 'zoom-in' }
-        }}
         toolbar={{
           buttons: [
             <button
@@ -494,10 +491,10 @@ const GalleryPage = () => {
             return (
               <animated.div
                 style={infoSpring}
-                className={`absolute bottom-6 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:right-auto md:w-[500px] md:max-w-[90vw] bg-black/80 backdrop-blur-md p-5 rounded-2xl text-white shadow-2xl z-50 border border-white/10 transition-all ${showInfo ? 'pointer-events-auto' : 'pointer-events-none'}`}
+                className={`absolute bottom-6 left-1/2 -translate-x-1/2 w-[90vw] max-w-[500px] bg-black/80 backdrop-blur-md p-5 rounded-2xl text-white shadow-2xl z-50 border border-white/10 transition-all ${showInfo ? 'pointer-events-auto' : 'pointer-events-none'}`}
               >
-                <h3 className="font-bold text-lg mb-2">{slide.title}</h3>
-                <p className="text-sm text-gray-300">{slide.description}</p>
+                <h3 className="font-bold text-lg mb-2 text-center">{slide.title}</h3>
+                <p className="text-sm text-gray-300 text-center">{slide.description}</p>
               </animated.div>
             );
           },
