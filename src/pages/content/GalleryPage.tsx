@@ -484,7 +484,7 @@ const GalleryPage = () => {
             >
               <Info size={24} />
             </button>,
-            "zoom",
+            //"zoom",
             "close",
           ],
         }}
