@@ -22,9 +22,9 @@ const Footer: React.FC = () => {
           >
             <div className="flex items-center gap-3 mb-6">
               <img
-                src="https://ecolearn.pages.dev/img/logo.png"
+                src="https://afsh-web.pages.dev/logo.png"
                 alt="Air Force School Hindan Logo"
-                className="w-12 h-12 rounded-full object-cover border border-af-gold shadow-lg shadow-af-blue/20"
+                className="w-16 h-16"
               />
               <div>
                 <h3 className="font-serif font-bold text-xl tracking-tight">Air Force School</h3>
