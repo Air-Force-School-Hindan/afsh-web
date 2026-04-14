@@ -467,6 +467,9 @@ const GalleryPage = () => {
         zoom={{
           scrollToZoom: true,
         }}
+        styles={{
+          container: { cursor: 'zoom-in' }
+        }}
         toolbar={{
           buttons: [
             <button
@@ -478,7 +481,6 @@ const GalleryPage = () => {
             >
               <Info size={24} />
             </button>,
-            "zoom",
             "close",
           ],
         }}
@@ -486,8 +488,8 @@ const GalleryPage = () => {
           view: () => setShowInfo(false),
         }}
         render={{
-          slideFooter: () => {
-            const slide = slides[index];
+          buttonZoom: () => null,
+          slideFooter: ({ slide }) => {
             if (!slide) return null;
             return (
               <animated.div
