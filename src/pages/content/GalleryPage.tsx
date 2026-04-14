@@ -260,18 +260,18 @@ const GalleryPage = () => {
     setCurrentPage(1);
   };
 
-  const photosForAlbum = paginatedPhotos.map(p => ({
+  const photosForAlbum = useMemo(() => paginatedPhotos.map(p => ({
     src: p.src,
     width: p.width,
     height: p.height,
     title: p.title
-  }));
+  })), [paginatedPhotos]);
 
-  const slides = filteredPhotos.map(p => ({
+  const slides = useMemo(() => filteredPhotos.map(p => ({
     src: p.src,
     title: p.title,
     description: `Taken on ${p.date} • ${p.album}`
-  }));
+  })), [filteredPhotos]);
 
   return (
     <PageAnimate className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white pb-12 transition-colors duration-300">
@@ -484,25 +484,29 @@ const GalleryPage = () => {
           ],
         }}
         on={{
-          view: () => setShowInfo(false),
+          view: ({ index: newIndex }) => {
+            setIndex(newIndex);
+            setShowInfo(false);
+          },
           click: () => {
             zoomRef.current?.zoomIn();
           },
         }}
         render={{
           buttonZoom: () => null,
-          slideFooter: ({ slide }) => {
-            if (!slide) return null;
-            return (
-              <animated.div
-                style={infoSpring}
-                className={`fixed bottom-6 left-0 right-0 mx-auto w-[90vw] max-w-[500px] bg-black/80 backdrop-blur-md p-5 rounded-2xl text-white shadow-2xl z-50 border border-white/10 transition-all ${showInfo ? 'pointer-events-auto' : 'pointer-events-none'}`}
-              >
-                <h3 className="font-bold text-lg mb-2 text-center">{slide.title}</h3>
-                <p className="text-sm text-gray-300 text-center">{slide.description}</p>
-              </animated.div>
-            );
-          },
+          controls: () => (
+            <animated.div
+              style={infoSpring}
+              className={`fixed bottom-10 left-1/2 -translate-x-1/2 w-[90vw] max-w-[500px] bg-black/80 backdrop-blur-md p-5 rounded-2xl text-white shadow-2xl z-[1000] border border-white/10 transition-all ${showInfo ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+            >
+              {index >= 0 && slides[index] && (
+                <>
+                  <h3 className="font-bold text-lg mb-2 text-center">{slides[index].title}</h3>
+                  <p className="text-sm text-gray-300 text-center">{slides[index].description}</p>
+                </>
+              )}
+            </animated.div>
+          ),
         }}
       />
 
