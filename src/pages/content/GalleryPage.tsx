@@ -269,8 +269,11 @@ const GalleryPage = () => {
 
   const slides = useMemo(() => filteredPhotos.map(p => ({
     src: p.src,
+    width: p.width,
+    height: p.height,
     title: p.title,
-    description: `Taken on ${p.date} • ${p.album}`
+    description: `Taken on ${p.date} • ${p.album}`,
+    alt: p.title
   })), [filteredPhotos]);
 
   return (
@@ -468,6 +471,7 @@ const GalleryPage = () => {
         zoom={{
           ref: zoomRef,
           scrollToZoom: true,
+          maxZoomPixelRatio: 5,
         }}
         toolbar={{
           buttons: [
@@ -480,6 +484,7 @@ const GalleryPage = () => {
             >
               <Info size={24} />
             </button>,
+            "zoom",
             "close",
           ],
         }}
@@ -488,16 +493,12 @@ const GalleryPage = () => {
             setIndex(newIndex);
             setShowInfo(false);
           },
-          click: () => {
-            zoomRef.current?.zoomIn();
-          },
         }}
         render={{
-          buttonZoom: () => null,
           controls: () => (
             <animated.div
               style={infoSpring}
-               className={`fixed bottom-6 left-0 right-0 mx-auto w-[90vw] max-w-[500px] bg-black/80 backdrop-blur-md p-5 rounded-2xl text-white shadow-2xl z-50 border border-white/10 transition-all ${showInfo ? 'pointer-events-auto' : 'pointer-events-none'}`}
+              className={`fixed bottom-6 left-0 right-0 mx-auto w-[90vw] max-w-[500px] bg-black/80 backdrop-blur-md p-5 rounded-2xl text-white shadow-2xl z-50 border border-white/10 transition-all ${showInfo ? 'pointer-events-auto' : 'pointer-events-none'}`}
             >
               {index >= 0 && slides[index] && (
                 <>
