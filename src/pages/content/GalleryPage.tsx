@@ -180,7 +180,7 @@ const GalleryPage = () => {
   const [index, setIndex] = useState(-1);
   const [currentPage, setCurrentPage] = useState(1);
   const [showInfo, setShowInfo] = useState(false);
-  // const zoomRef = React.useRef<any>(null);
+  const zoomRef = React.useRef<any>(null);
   const itemsPerPage = 20;
 
   // Filter States
@@ -469,7 +469,7 @@ const GalleryPage = () => {
         slides={slides}
         plugins={[Zoom]}
         zoom={{
-          // ref: zoomRef,
+          ref: zoomRef,
           scrollToZoom: true,
           maxZoomPixelRatio: 5,
         }}
@@ -484,7 +484,7 @@ const GalleryPage = () => {
             >
               <Info size={24} />
             </button>,
-            //"zoom",
+            "zoom",
             "close",
           ],
         }}
