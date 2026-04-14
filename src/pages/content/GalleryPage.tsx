@@ -269,8 +269,11 @@ const GalleryPage = () => {
 
   const slides = useMemo(() => filteredPhotos.map(p => ({
     src: p.src,
+    width: p.width,
+    height: p.height,
     title: p.title,
-    description: `Taken on ${p.date} • ${p.album}`
+    description: `Taken on ${p.date} • ${p.album}`,
+    alt: p.title
   })), [filteredPhotos]);
 
   return (
@@ -468,6 +471,7 @@ const GalleryPage = () => {
         zoom={{
           ref: zoomRef,
           scrollToZoom: true,
+          maxZoomPixelRatio: 5,
         }}
         toolbar={{
           buttons: [
@@ -480,6 +484,7 @@ const GalleryPage = () => {
             >
               <Info size={24} />
             </button>,
+            "zoom",
             "close",
           ],
         }}
@@ -488,12 +493,8 @@ const GalleryPage = () => {
             setIndex(newIndex);
             setShowInfo(false);
           },
-          click: () => {
-            zoomRef.current?.zoomIn();
-          },
         }}
         render={{
-          buttonZoom: () => null,
           controls: () => (
             <animated.div
               style={infoSpring}
