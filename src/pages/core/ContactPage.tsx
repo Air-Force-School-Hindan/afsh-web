@@ -5,6 +5,7 @@ import Silk from '@/src/components/ui/Silk';
 import PageAnimate from '../../components/ui/PageAnimate';
 import { fadeInUp, fadeIn, scaleIn, slideInFromLeft, slideInFromRight } from '../../utils/animations';
 import { useTinaPage } from '@/src/hooks/useTinaPage';
+import { logErrorSecurely, getSafeErrorMessage } from '../../utils/security';
 
 const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -54,11 +55,11 @@ const ContactPage: React.FC = () => {
           message: ''
         });
       } else {
-        alert("Something went wrong");
+        alert(getSafeErrorMessage(data, "Something went wrong. Please try again."));
       }
     } catch (error) {
-      console.error(error);
-      alert("Server error. Please try again.");
+      logErrorSecurely(error, 'ContactPage');
+      alert(getSafeErrorMessage(error, "Server error. Please try again."));
     }
   };
 
