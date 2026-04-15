@@ -15,3 +15,9 @@
 **Vulnerability:** Potential information leakage via verbose API error logging in production and insecure HTTP fallback for backend communication if environment variables are missing.
 **Learning:** Hardcoding fallbacks to localhost in production code can lead to insecure connection attempts or application failure. Duplicating these fallbacks across multiple files increases maintenance risk.
 **Prevention:** Centralize backend configuration and use environment-aware helpers (e.g., `import.meta.env.DEV`) to ensure secure defaults in production while maintaining development flexibility. Restrict verbose logging to development environments.
+
+## 2026-04-14 - [Security Enhancement] Secure Error Handling to Prevent Information Leakage
+
+**Vulnerability:** Information leakage via direct exposure of technical error details (e.g., stack traces, internal API responses) in frontend `console.log` and `alert` calls during failed `fetch` operations.
+**Learning:** React components often lack defensive error handling for direct `fetch` calls, defaulting to logging the entire error object which can reveal sensitive backend internals in production.
+**Prevention:** Implement a centralized security utility (e.g., `src/utils/security.ts`) that uses `import.meta.env.DEV` to provide environment-aware logging and generic user-facing error messages, ensuring technical internals are never leaked in production.
