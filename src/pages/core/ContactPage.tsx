@@ -5,6 +5,7 @@ import Silk from '@/src/components/ui/Silk';
 import PageAnimate from '../../components/ui/PageAnimate';
 import { fadeInUp, fadeIn, scaleIn, slideInFromLeft, slideInFromRight } from '../../utils/animations';
 import { useTinaPage } from '@/src/hooks/useTinaPage';
+import { logErrorSecurely, getSafeErrorMessage } from '../../utils/security';
 
 const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -41,9 +42,19 @@ const ContactPage: React.FC = () => {
         }
       );
 
-      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(`Submission failed with status: ${res.status}`);
+      }
 
-      if (data.success) {
+      const contentType = res.headers.get("content-type");
+      let responseData: any;
+      if (contentType && contentType.includes("application/json")) {
+          responseData = await res.json();
+      } else {
+          responseData = { success: true }; // Fallback for non-JSON success
+      }
+
+      if (responseData.success) {
         setSubmitted(true);
 
         setFormData({
@@ -54,11 +65,11 @@ const ContactPage: React.FC = () => {
           message: ''
         });
       } else {
-        alert("Something went wrong");
+        alert("Something went wrong. Please check your input.");
       }
     } catch (error) {
-      console.error(error);
-      alert("Server error. Please try again.");
+      logErrorSecurely('Contact form submission error', error);
+      alert(getSafeErrorMessage(error, "Server error. Please try again."));
     }
   };
 
