@@ -1,4 +1,5 @@
 import { AlumniFormData, AlumniRegistrationResponse } from '../types/alumni';
+import { logErrorSecurely } from '../utils/security';
 
 const API_URL = import.meta.env.VITE_ALUMNI_API_URL || "https://form-backend-afsh-web.up.railway.app/api/alumni/register";
 
@@ -20,19 +21,23 @@ export const registerAlumni = async (data: AlumniFormData): Promise<AlumniRegist
     } else {
         const text = await response.text();
         if (!response.ok) {
-            throw new Error(text || `Failed to submit form: ${response.statusText}`);
+            const error: any = new Error(text || `Failed to submit form: ${response.statusText}`);
+            error.status = response.status;
+            throw error;
         }
         // If success but no JSON, return minimal success object
         return { success: true, message: text || "Success" };
     }
 
     if (!response.ok) {
-      throw new Error(responseData.message || responseData.error || `Failed to submit form: ${response.statusText}`);
+      const error: any = new Error(responseData.message || responseData.error || `Failed to submit form: ${response.statusText}`);
+      error.status = response.status;
+      throw error;
     }
 
     return responseData as AlumniRegistrationResponse;
   } catch (error) {
-    console.error("Alumni registration error:", error);
+    logErrorSecurely("Alumni registration error", error);
     throw error;
   }
 };

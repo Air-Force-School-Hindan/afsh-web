@@ -7,6 +7,7 @@ import PageAnimate from '../../components/ui/PageAnimate';
 import { fadeInUp, fadeIn, scaleIn } from '../../utils/animations';
 import { AlumniFormData } from '../../types/alumni';
 import { registerAlumni } from '../../services/alumniService';
+import { getSafeErrorMessage } from '../../utils/security';
 
 
 const AlumniRegistrationPage: React.FC = () => {
@@ -106,7 +107,7 @@ const AlumniRegistrationPage: React.FC = () => {
       }
 
     } catch (err: any) {
-      setError(err.message || "Something went wrong");
+      setError(getSafeErrorMessage(err, "Something went wrong. Please try again later."));
     } finally {
       setIsSubmitting(false);
     }
