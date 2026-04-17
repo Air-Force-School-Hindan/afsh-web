@@ -1,4 +1,5 @@
 import { AlumniFormData, AlumniRegistrationResponse } from '../types/alumni';
+import { logErrorSecurely } from '../utils/security';
 
 const API_URL = import.meta.env.VITE_ALUMNI_API_URL || "https://form-backend-afsh-web.up.railway.app/api/alumni/register";
 
@@ -32,7 +33,8 @@ export const registerAlumni = async (data: AlumniFormData): Promise<AlumniRegist
 
     return responseData as AlumniRegistrationResponse;
   } catch (error) {
-    console.error("Alumni registration error:", error);
+    // Sentinel: Use secure logging
+    logErrorSecurely("Alumni registration error", error);
     throw error;
   }
 };
