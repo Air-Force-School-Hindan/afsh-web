@@ -6,6 +6,7 @@ import Silk from '@/src/components/ui/Silk';
 import PageAnimate from '../../components/ui/PageAnimate';
 import { fadeInUp } from '../../utils/animations';
 import { useTinaPage } from '@/src/hooks/useTinaPage';
+import { logErrorSecurely } from '../../utils/security';
 
 interface FormData {
   name: string;
@@ -74,9 +75,30 @@ const AdmissionPage: React.FC = () => {
           body: JSON.stringify(formData),
         }
       );
+
+      // Sentinel: Securely handle form submission response
+      if (res.ok) {
+        const result = await res.json();
+        if (result.success) {
+          setSubmitted(true);
+          setFormData({
+            name: '',
+            email: '',
+            phone: '',
+            class: '',
+            guardianName: '',
+            message: ''
+          });
+        } else {
+          alert(result.message || "Something went wrong. Please try again.");
+        }
+      } else {
+        logErrorSecurely('Admission inquiry failed', res.statusText, res.status);
+        alert("Server error. Please try again.");
+      }
     } catch (err) {
-      console.error(err);
-      alert("Server error");
+      logErrorSecurely('Admission inquiry exception', err);
+      alert("An unexpected error occurred. Please try again.");
     }
   };
 

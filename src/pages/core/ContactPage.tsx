@@ -5,6 +5,7 @@ import Silk from '@/src/components/ui/Silk';
 import PageAnimate from '../../components/ui/PageAnimate';
 import { fadeInUp, fadeIn, scaleIn, slideInFromLeft, slideInFromRight } from '../../utils/animations';
 import { useTinaPage } from '@/src/hooks/useTinaPage';
+import { logErrorSecurely } from '../../utils/security';
 
 const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -41,24 +42,28 @@ const ContactPage: React.FC = () => {
         }
       );
 
-      const data = await res.json();
-
-      if (data.success) {
-        setSubmitted(true);
-
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          subject: '',
-          message: ''
-        });
+      // Sentinel: Securely handle form submission response
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          setSubmitted(true);
+          setFormData({
+            name: '',
+            email: '',
+            phone: '',
+            subject: '',
+            message: ''
+          });
+        } else {
+          alert(data.message || "Something went wrong. Please try again.");
+        }
       } else {
-        alert("Something went wrong");
+        logErrorSecurely('Contact form submission failed', res.statusText, res.status);
+        alert("Server error. Please try again.");
       }
     } catch (error) {
-      console.error(error);
-      alert("Server error. Please try again.");
+      logErrorSecurely('Contact form submission exception', error);
+      alert("An unexpected error occurred. Please try again.");
     }
   };
 
