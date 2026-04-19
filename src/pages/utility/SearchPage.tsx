@@ -120,10 +120,11 @@ const SearchPage: React.FC = () => {
       setIsSearching(true);
       // Simulate search delay
       setTimeout(() => {
+        const lowerQuery = query.toLowerCase();
         const filteredResults = mockData.filter(item =>
-          item.title.toLowerCase().includes(query.toLowerCase()) ||
-          item.description.toLowerCase().includes(query.toLowerCase()) ||
-          item.category.toLowerCase().includes(query.toLowerCase())
+          item.title.toLowerCase().includes(lowerQuery) ||
+          item.description.toLowerCase().includes(lowerQuery) ||
+          item.category.toLowerCase().includes(lowerQuery)
         );
         setSearchResults(filteredResults);
         setIsSearching(false);
