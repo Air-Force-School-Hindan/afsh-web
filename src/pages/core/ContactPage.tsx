@@ -5,6 +5,7 @@ import Silk from '@/src/components/ui/Silk';
 import PageAnimate from '../../components/ui/PageAnimate';
 import { fadeInUp, fadeIn, scaleIn, slideInFromLeft, slideInFromRight } from '../../utils/animations';
 import { useTinaPage } from '@/src/hooks/useTinaPage';
+import { logErrorSecurely, getSafeErrorMessage } from '../../utils/security';
 
 const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -41,24 +42,32 @@ const ContactPage: React.FC = () => {
         }
       );
 
-      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
 
-      if (data.success) {
-        setSubmitted(true);
-
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          subject: '',
-          message: ''
-        });
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const data = await res.json();
+        if (data.success) {
+          setSubmitted(true);
+          setFormData({
+            name: '',
+            email: '',
+            phone: '',
+            subject: '',
+            message: ''
+          });
+        } else {
+          alert(data.message || "Something went wrong. Please try again.");
+        }
       } else {
-        alert("Something went wrong");
+        // Handle non-JSON success response if applicable
+        setSubmitted(true);
       }
     } catch (error) {
-      console.error(error);
-      alert("Server error. Please try again.");
+      logErrorSecurely('Contact form submission failed', error);
+      alert(getSafeErrorMessage(error, "Server error. Please try again."));
     }
   };
 

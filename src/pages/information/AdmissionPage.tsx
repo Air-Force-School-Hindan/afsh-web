@@ -6,6 +6,7 @@ import Silk from '@/src/components/ui/Silk';
 import PageAnimate from '../../components/ui/PageAnimate';
 import { fadeInUp } from '../../utils/animations';
 import { useTinaPage } from '@/src/hooks/useTinaPage';
+import { logErrorSecurely, getSafeErrorMessage } from '../../utils/security';
 
 interface FormData {
   name: string;
@@ -74,9 +75,25 @@ const AdmissionPage: React.FC = () => {
           body: JSON.stringify(formData),
         }
       );
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const data = await res.json();
+        if (data.success) {
+          setSubmitted(true);
+        } else {
+          alert(data.message || "Something went wrong. Please try again.");
+        }
+      } else {
+        setSubmitted(true);
+      }
     } catch (err) {
-      console.error(err);
-      alert("Server error");
+      logErrorSecurely('Admission form submission failed', err);
+      alert(getSafeErrorMessage(err, "Server error. Please try again."));
     }
   };
 
