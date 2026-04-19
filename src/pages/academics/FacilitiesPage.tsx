@@ -178,21 +178,19 @@ const FacilitiesPage: React.FC = () => {
         setCurrentImageIndex(0);
     };
 
+    const currentFacility = facilities.find(f => f.title === selectedGallery);
+
     const nextImage = () => {
-        const facility = facilities.find(f => f.title === selectedGallery);
-        if (facility) {
-            setCurrentImageIndex((prev) => (prev + 1) % facility.images.length);
+        if (currentFacility) {
+            setCurrentImageIndex((prev) => (prev + 1) % currentFacility.images.length);
         }
     };
 
     const prevImage = () => {
-        const facility = facilities.find(f => f.title === selectedGallery);
-        if (facility) {
-            setCurrentImageIndex((prev) => (prev - 1 + facility.images.length) % facility.images.length);
+        if (currentFacility) {
+            setCurrentImageIndex((prev) => (prev - 1 + currentFacility.images.length) % currentFacility.images.length);
         }
     };
-
-    const currentFacility = facilities.find(f => f.title === selectedGallery);
 
     return (
         <PageAnimate className="bg-white dark:bg-gray-900">
