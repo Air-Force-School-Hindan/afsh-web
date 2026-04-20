@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unknown-property */
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import React, { forwardRef, useRef, useMemo, useLayoutEffect, useEffect } from 'react';
+import React, { useRef, useMemo, useLayoutEffect, useEffect } from 'react';
 import { Color, Mesh } from 'three';
 
 interface SilkProps {
@@ -13,6 +13,7 @@ interface SilkProps {
 }
 
 interface SilkPlaneProps {
+    ref?: React.Ref<Mesh>;
     uniforms: {
         uSpeed: { value: number };
         uScale: { value: number };
@@ -89,7 +90,8 @@ void main() {
 }
 `;
 
-const SilkPlane = forwardRef<Mesh, SilkPlaneProps>(function SilkPlane({ uniforms }, ref) {
+// 🛰️ Spark: Removed forwardRef. In React 19, ref can be passed as a regular prop to functional components.
+function SilkPlane({ uniforms, ref }: SilkPlaneProps) {
     const { viewport } = useThree();
 
     useLayoutEffect(() => {
@@ -111,8 +113,7 @@ const SilkPlane = forwardRef<Mesh, SilkPlaneProps>(function SilkPlane({ uniforms
             <shaderMaterial uniforms={uniforms} vertexShader={vertexShader} fragmentShader={fragmentShader} />
         </mesh>
     );
-});
-SilkPlane.displayName = 'SilkPlane';
+}
 
 const Silk: React.FC<SilkProps> = ({
     speed = 5,
