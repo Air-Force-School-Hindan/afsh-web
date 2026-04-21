@@ -1,5 +1,6 @@
 import { apiClient } from '../api/client';
 import { BlogPost } from '../types/blog';
+import { logErrorSecurely } from '../utils/security';
 
 interface StrapiResponse<T> {
     data: T;
@@ -14,7 +15,7 @@ export const PostService = {
             const response = await apiClient.get<StrapiResponse<BlogPost[]>>(`/api/posts?${POPULATE_ALL}&sort=publishedAt:desc`);
             return response.data.data;
         } catch (error) {
-            console.error('Error fetching all posts:', error);
+            logErrorSecurely('Error fetching all posts', error);
             throw error;
         }
     },
@@ -24,7 +25,7 @@ export const PostService = {
             const response = await apiClient.get<StrapiResponse<BlogPost[]>>(`/api/posts?${POPULATE_ALL}&pagination[pageSize]=${limit}&sort[0]=publishedAt:desc`);
             return response.data.data;
         } catch (error) {
-            console.error('Error fetching latest posts:', error);
+            logErrorSecurely('Error fetching latest posts', error);
             throw error;
         }
     },
@@ -37,7 +38,7 @@ export const PostService = {
             }
             return null;
         } catch (error) {
-            console.error(`Error fetching post with slug ${slug}:`, error);
+            logErrorSecurely(`Error fetching post with slug ${slug}`, error);
             throw error;
         }
     },
@@ -47,7 +48,7 @@ export const PostService = {
             const response = await apiClient.get<StrapiResponse<BlogPost[]>>(`/api/posts?filters[slug][$ne]=${slug}&pagination[pageSize]=${limit}&sort=publishedAt:desc&${POPULATE_ALL}`);
             return response.data.data;
         } catch (error) {
-            console.error('Error fetching related posts:', error);
+            logErrorSecurely('Error fetching related posts', error);
             return [];
         }
     }
