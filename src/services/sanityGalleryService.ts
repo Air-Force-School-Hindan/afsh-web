@@ -1,4 +1,5 @@
 import { sanityClient, urlFor } from '../lib/sanity';
+import { logErrorSecurely } from '../utils/security';
 
 export interface Photo {
   id: string;
@@ -89,7 +90,7 @@ export async function fetchGalleryData(): Promise<Photo[]> {
       album: item.album || 'Uncategorized'
     }));
   } catch (error) {
-    console.error('Failed to fetch from Sanity:', error);
+    logErrorSecurely('Failed to fetch from Sanity', error);
     // Fallback to mock data on error so the page doesn't break
     return MOCK_PHOTOS;
   }
