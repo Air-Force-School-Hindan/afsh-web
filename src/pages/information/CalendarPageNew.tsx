@@ -231,13 +231,8 @@ const CalendarPageNew: React.FC = () => {
 
   // Optimize event lookup by grouping events by date
   const eventsByDate = useMemo(() => {
-    const grouped: Record<string, CalendarEvent[]> = {};
-    events.forEach(event => {
-      const key = `${event.year}-${event.month}-${event.date}`;
-      if (!grouped[key]) grouped[key] = [];
-      grouped[key].push(event);
-    });
-    return grouped;
+    // 🛰️ Spark: Using native ES2024 Object.groupBy for cleaner and more declarative grouping
+    return Object.groupBy(events, (event) => `${event.year}-${event.month}-${event.date}`);
   }, [events]);
 
   const memoizedUpcomingEvents = useMemo(() => {
