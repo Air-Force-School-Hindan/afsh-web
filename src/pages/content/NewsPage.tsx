@@ -8,6 +8,7 @@ import PageAnimate from '../../components/ui/PageAnimate';
 import { fadeInUp } from '../../utils/animations';
 import { PostService } from '../../services/postService';
 import { getStrapiMedia, extractImageUrl } from '../../utils/strapi';
+import { logErrorSecurely } from '../../utils/security';
 
 const NewsPage = () => {
     const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -27,7 +28,7 @@ const NewsPage = () => {
                     setError("No articles found or invalid API format.");
                 }
             } catch (err: any) {
-                console.error("Failed to fetch posts", err);
+                logErrorSecurely("Failed to fetch posts", err);
                 setError(err.message || "Could not load news posts.");
             } finally {
                 setLoading(false);

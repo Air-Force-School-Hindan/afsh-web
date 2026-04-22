@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getStrapiBaseURL } from '../config';
+import { logErrorSecurely } from '../utils/security';
 
 const STRAPI_URL = getStrapiBaseURL();
 
@@ -15,12 +16,8 @@ export const apiClient = axios.create({
 apiClient.interceptors.response.use(
     (response) => response,
     (error) => {
-        // Sentinel: Prevent information leakage in production by only logging status codes
-        if (import.meta.env.DEV) {
-            console.error('API Error:', error.response?.status, error.message, error.response?.data);
-        } else {
-            console.error('API Error:', error.response?.status || 'Unknown Status');
-        }
+        // Sentinel: Prevent information leakage in production by using logErrorSecurely
+        logErrorSecurely('API Error', error, error.response?.status);
         return Promise.reject(error);
     }
 );

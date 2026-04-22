@@ -6,6 +6,7 @@ import { BlogPost } from '../../types/blog';
 import { PostService } from '../../services/postService';
 import { getStrapiMedia, extractImageUrl } from '../../utils/strapi';
 import { tinaField } from "tinacms/dist/react";
+import { logErrorSecurely } from '../../utils/security';
 
 interface LatestNewsProps {
   title?: string;
@@ -28,7 +29,7 @@ const LatestNews: React.FC<LatestNewsProps> = ({ title, count = 3, block }) => {
           setPosts(fetchedPosts);
         }
       } catch (err) {
-        console.error("Failed to fetch latest news", err);
+        logErrorSecurely("Failed to fetch latest news", err);
       } finally {
         setLoading(false);
       }

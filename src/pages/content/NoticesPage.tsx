@@ -7,6 +7,7 @@ import Silk from '../../components/ui/Silk';
 import PageAnimate from '../../components/ui/PageAnimate';
 import { fadeInUp } from '../../utils/animations';
 import { getStrapiMedia } from '../../utils/strapi';
+import { logErrorSecurely } from '../../utils/security';
 
 const NoticesPage: React.FC = () => {
     const [notices, setNotices] = useState<Notice[]>([]);
@@ -21,7 +22,7 @@ const NoticesPage: React.FC = () => {
                 const response = await fetchNotices();
                 setNotices(response.data);
             } catch (err) {
-                console.error(err);
+                logErrorSecurely('Failed to load notices', err);
                 setError('Failed to load notices. Please try again later.');
             } finally {
                 setLoading(false);
