@@ -1,5 +1,6 @@
 import { apiClient } from '../api/client';
 import { StrapiResponse, Notice } from '../types/strapi';
+import { logErrorSecurely } from '../utils/security';
 
 export const fetchNotices = async (page = 1, pageSize = 25): Promise<StrapiResponse<Notice[]>> => {
   try {
@@ -9,7 +10,7 @@ export const fetchNotices = async (page = 1, pageSize = 25): Promise<StrapiRespo
 
     return response.data;
   } catch (error) {
-    console.error('Failed to fetch notices:', error);
+    logErrorSecurely('Failed to fetch notices', error);
     throw error;
   }
 };

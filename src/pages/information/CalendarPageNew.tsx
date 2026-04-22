@@ -5,6 +5,7 @@ import axios from 'axios';
 import Silk from '@/src/components/ui/Silk';
 import PageAnimate from '../../components/ui/PageAnimate';
 import { fadeInUp } from '../../utils/animations';
+import { logErrorSecurely } from '../../utils/security';
 
 interface CalendarEvent {
   date: number;
@@ -164,8 +165,7 @@ const CalendarPageNew: React.FC = () => {
               );
               return response.data;
             } catch (e: any) {
-              const msg = e.response?.data?.error?.message || e.message;
-              console.warn(`Failed to fetch events for calendar ${calendarId}`, e);
+              logErrorSecurely(`Failed to fetch events for calendar ${calendarId}`, e);
               return null;
             }
           });
@@ -203,7 +203,7 @@ const CalendarPageNew: React.FC = () => {
           // Merge with initial hardcoded events (deduplication logic skipped for simplicity, but could be added based on ID)
           setEvents(allNewEvents);
         } catch (error: any) {
-          console.error('Error fetching public calendar events:', error);
+          logErrorSecurely('Error fetching public calendar events', error);
         }
       }
       fetchPublicEvents();
