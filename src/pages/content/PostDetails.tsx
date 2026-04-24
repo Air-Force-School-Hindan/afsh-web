@@ -8,6 +8,7 @@ import PageAnimate from '../../components/ui/PageAnimate';
 import { fadeInUp } from '../../utils/animations';
 import { PostService } from '../../services/postService';
 import { getStrapiMedia, extractImageUrl } from '../../utils/strapi';
+import { logErrorSecurely } from '../../utils/security';
 
 const PostDetails = () => {
     const { slug } = useParams();
@@ -36,7 +37,7 @@ const PostDetails = () => {
                 setPost(fetchedPost);
                 setRelatedPosts(fetchedRelated);
             } catch (err) {
-                console.error("Failed to load post details:", err);
+                logErrorSecurely("Failed to load post details", err);
                 setPost(null);
             } finally {
                 setLoading(false);

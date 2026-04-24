@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Notice } from '../../types/strapi';
 import { fetchRecentNotices } from '../../services/noticeService';
 import { tinaField } from "tinacms/dist/react";
+import { logErrorSecurely } from '../../utils/security';
 
 interface NoticeBoardProps {
   title?: string;
@@ -22,7 +23,7 @@ const NoticeBoard: React.FC<NoticeBoardProps> = ({ title = 'Notice Board', block
         const response = await fetchRecentNotices(5); // Fetch top 5 notices
         setNotices(response.data);
       } catch (error) {
-        console.error('Failed to load notices:', error);
+        logErrorSecurely('Failed to load notices', error);
       } finally {
         setLoading(false);
       }

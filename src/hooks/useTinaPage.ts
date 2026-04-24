@@ -2,6 +2,7 @@ import { useTina } from "tinacms/dist/react";
 // @ts-ignore - this file is generated at build time
 import { client } from "../../tina/__generated__/client";
 import { useEffect, useState } from "react";
+import { logErrorSecurely } from "../utils/security";
 
 export const useTinaPage = (relativePath: string) => {
     const [tinaData, setTinaData] = useState<any>(null);
@@ -12,7 +13,7 @@ export const useTinaPage = (relativePath: string) => {
                 const response = await client.queries.page({ relativePath });
                 setTinaData(response);
             } catch (e) {
-                console.error("Failed to fetch Tina content", e);
+                logErrorSecurely("Failed to fetch Tina content", e);
             }
         };
         fetchContent();
