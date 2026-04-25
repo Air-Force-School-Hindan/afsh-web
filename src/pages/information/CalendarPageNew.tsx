@@ -29,7 +29,8 @@ interface DayViewModalProps {
 const DayViewModal: React.FC<DayViewModalProps> = ({ isOpen, onClose, date, events }) => {
   if (!isOpen) return null;
 
-  const sortedEvents = [...events].sort((a, b) => {
+  // 🛰️ Spark: Replaced mutating .sort() on a shallow copy with modern ES2023 .toSorted()
+  const sortedEvents = events.toSorted((a, b) => {
     if (a.allDay && !b.allDay) return -1;
     if (!a.allDay && b.allDay) return 1;
     return (a.startTime || '').localeCompare(b.startTime || '');
