@@ -1,5 +1,6 @@
 import React, { useState, Suspense } from 'react';
-import { Phone, Mail, MapPin, Clock, Send, CheckCircle, MessageSquare, Users, Building } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock,CheckCircle, MessageSquare, Users, Building } from 'lucide-react';
+import { SubmitButton } from '../../components/ui/SubmitButton';
 import { motion } from 'framer-motion';
 import Silk from '@/src/components/ui/Silk';
 import PageAnimate from '../../components/ui/PageAnimate';
@@ -8,29 +9,21 @@ import { useTinaPage } from '@/src/hooks/useTinaPage';
 import { logErrorSecurely, getSafeErrorMessage } from '../../utils/security';
 
 const ContactPage: React.FC = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: ''
-  });
+  const formRef = React.useRef<HTMLFormElement>(null);
   const [submitted, setSubmitted] = useState(false);
 
   const { data, loading } = useTinaPage('contact.md');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const formAction = async (formData: FormData) => {
     try {
+      const payload = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        subject: formData.get('subject'),
+        message: formData.get('message')
+      };
+
       const res = await fetch(
         "https://form-backend-afsh-web.up.railway.app/api/contact/submit",
         {
@@ -38,7 +31,7 @@ const ContactPage: React.FC = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(payload),
         }
       );
 
@@ -51,19 +44,14 @@ const ContactPage: React.FC = () => {
         const data = await res.json();
         if (data.success) {
           setSubmitted(true);
-          setFormData({
-            name: '',
-            email: '',
-            phone: '',
-            subject: '',
-            message: ''
-          });
+          formRef.current?.reset();
         } else {
           alert(data.message || "Something went wrong. Please try again.");
         }
       } else {
         // Handle non-JSON success response if applicable
         setSubmitted(true);
+        formRef.current?.reset();
       }
     } catch (error) {
       logErrorSecurely('Contact form submission failed', error);
@@ -259,14 +247,12 @@ const ContactPage: React.FC = () => {
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form ref={formRef} action={formAction} className="space-y-5">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Name</label>
                   <input
                     type="text"
                     name="name"
-                    value={formData.name}
-                    onChange={handleChange}
                     required
                     placeholder="Your full name"
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-af-blue transition-all duration-300"
@@ -279,8 +265,6 @@ const ContactPage: React.FC = () => {
                     <input
                       type="email"
                       name="email"
-                      value={formData.email}
-                      onChange={handleChange}
                       required
                       placeholder="your@email.com"
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-af-blue transition-all duration-300"
@@ -291,8 +275,6 @@ const ContactPage: React.FC = () => {
                     <input
                       type="tel"
                       name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
                       placeholder="+91 XXXXXXXXXX"
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-af-blue transition-all duration-300"
                     />
@@ -304,8 +286,6 @@ const ContactPage: React.FC = () => {
                   <input
                     type="text"
                     name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
                     required
                     placeholder="What is this about?"
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-af-blue transition-all duration-300"
@@ -316,8 +296,6 @@ const ContactPage: React.FC = () => {
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Message</label>
                   <textarea
                     name="message"
-                    value={formData.message}
-                    onChange={handleChange}
                     required
                     rows={5}
                     placeholder="Tell us more about your inquiry..."
@@ -325,13 +303,7 @@ const ContactPage: React.FC = () => {
                   ></textarea>
                 </div>
 
-                <button
-                  type="submit"
-                  className="w-full px-8 py-3 bg-af-blue hover:bg-blue-700 text-white font-bold rounded-lg transition-all duration-500 ease-out transform hover:scale-105 flex items-center justify-center gap-2 shadow-lg"
-                >
-                  <Send size={18} />
-                  Send Message
-                </button>
+                <SubmitButton label="Send Message" />
               </form>
             </motion.div>
 
