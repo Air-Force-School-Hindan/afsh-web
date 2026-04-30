@@ -7,6 +7,7 @@ import PageAnimate from '../../components/ui/PageAnimate';
 import { fadeInUp, fadeIn, scaleIn } from '../../utils/animations';
 import { AlumniFormData } from '../../types/alumni';
 import { registerAlumni } from '../../services/alumniService';
+import { getSafeErrorMessage } from '../../utils/security';
 
 
 const AlumniRegistrationPage: React.FC = () => {
@@ -106,7 +107,7 @@ const AlumniRegistrationPage: React.FC = () => {
       }
 
     } catch (err: any) {
-      setError(err.message || "Something went wrong");
+      setError(getSafeErrorMessage(err, "Something went wrong"));
     } finally {
       setIsSubmitting(false);
     }
@@ -204,6 +205,8 @@ const AlumniRegistrationPage: React.FC = () => {
             className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 md:p-12"
           >
             <form onSubmit={handleSubmit} className="space-y-8">
+              {/* Sentinel: All input fields are protected with maxLength to prevent DoS attacks.
+                  Form submission uses getSafeErrorMessage to prevent technical info leakage. */}
               {/* Error Display */}
               {error && (
                 <motion.div
@@ -250,6 +253,7 @@ const AlumniRegistrationPage: React.FC = () => {
                       value={formData.firstName}
                       onChange={handleChange}
                       required
+                      maxLength={100}
                       placeholder="Enter your first name"
                       className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-af-blue focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white ${fieldErrors.firstName ? 'border-red-500 dark:border-red-400' : 'border-gray-300 dark:border-gray-600'
                         }`}
@@ -268,6 +272,7 @@ const AlumniRegistrationPage: React.FC = () => {
                       value={formData.lastName}
                       onChange={handleChange}
                       required
+                      maxLength={100}
                       placeholder="Enter your last name"
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-af-blue focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     />
@@ -282,6 +287,7 @@ const AlumniRegistrationPage: React.FC = () => {
                       value={formData.email}
                       onChange={handleChange}
                       required
+                      maxLength={255}
                       placeholder="Enter your email address"
                       className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-af-blue focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white ${fieldErrors.email ? 'border-red-500 dark:border-red-400' : 'border-gray-300 dark:border-gray-600'
                         }`}
@@ -300,6 +306,7 @@ const AlumniRegistrationPage: React.FC = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       required
+                      maxLength={20}
                       placeholder="+91 98765 43210"
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-af-blue focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     />
@@ -394,6 +401,7 @@ const AlumniRegistrationPage: React.FC = () => {
                       value={formData.currentOccupation}
                       onChange={handleChange}
                       required
+                      maxLength={100}
                       placeholder="e.g., Software Engineer"
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-af-blue focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     />
@@ -408,6 +416,7 @@ const AlumniRegistrationPage: React.FC = () => {
                       value={formData.company}
                       onChange={handleChange}
                       required
+                      maxLength={100}
                       placeholder="e.g., Google"
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-af-blue focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     />
@@ -422,6 +431,7 @@ const AlumniRegistrationPage: React.FC = () => {
                       value={formData.designation}
                       onChange={handleChange}
                       required
+                      maxLength={100}
                       placeholder="e.g., Senior Developer"
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-af-blue focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     />
@@ -436,6 +446,7 @@ const AlumniRegistrationPage: React.FC = () => {
                       value={formData.address}
                       onChange={handleChange}
                       required
+                      maxLength={300}
                       placeholder="123, Main Street"
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-af-blue focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     />
@@ -450,6 +461,7 @@ const AlumniRegistrationPage: React.FC = () => {
                       value={formData.city}
                       onChange={handleChange}
                       required
+                      maxLength={100}
                       placeholder="e.g., Delhi"
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-af-blue focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     />
@@ -464,6 +476,7 @@ const AlumniRegistrationPage: React.FC = () => {
                       value={formData.state}
                       onChange={handleChange}
                       required
+                      maxLength={100}
                       placeholder="e.g., Uttar Pradesh"
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-af-blue focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     />
@@ -478,6 +491,7 @@ const AlumniRegistrationPage: React.FC = () => {
                       value={formData.country}
                       onChange={handleChange}
                       required
+                      maxLength={100}
                       placeholder="e.g., India"
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-af-blue focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     />
@@ -514,6 +528,7 @@ const AlumniRegistrationPage: React.FC = () => {
                       name="achievements"
                       value={formData.achievements}
                       onChange={handleChange}
+                      maxLength={2000}
                       rows={4}
                       placeholder="Share your achievements, awards, or notable accomplishments..."
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-af-blue focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
@@ -527,6 +542,7 @@ const AlumniRegistrationPage: React.FC = () => {
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
+                      maxLength={2000}
                       rows={4}
                       placeholder="Any additional message or information you'd like to share..."
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-af-blue focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
