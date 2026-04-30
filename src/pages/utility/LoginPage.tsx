@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useActionState } from 'react';
 import { ArrowLeft, User, Lock, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Silk from '../../components/ui/Silk';
@@ -11,28 +11,22 @@ interface LoginPageProps {
 }
 
 const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onBack }) => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState('');
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        setError('');
+    const loginAction = async (_prevState: string, formData: FormData) => {
+        const username = formData.get('username') as string;
+        const password = formData.get('password') as string;
 
         if (!username.trim() || !password.trim()) {
-            setError('Please enter both username and password.');
-            return;
+            return 'Please enter both username and password.';
         }
 
-        setIsLoading(true);
         // Simulate API authentication delay
-        setTimeout(() => {
-            setIsLoading(false);
-            onLogin(username);
-        }, 1500);
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        onLogin(username);
+        return '';
     };
 
+    const [error, formAction, isPending] = useActionState(loginAction, '');
 
     return (
         <PageAnimate className="min-h-screen w-full flex items-center justify-center bg-gray-900 relative overflow-hidden font-sans">
@@ -72,7 +66,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onBack }) => {
                         <p className="text-blue-200 text-sm">Login to access your dashboard</p>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                    <form action={formAction} className="space-y-6">
                         {error && (
                             <motion.div
                                 className="bg-red-500/20 border border-red-500/50 text-red-200 text-xs p-3 rounded text-center"
@@ -88,8 +82,8 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onBack }) => {
                                 <User className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50" size={18} />
                                 <input
                                     type="text"
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)}
+                                    name="username"
+                                    defaultValue=""
                                     className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-12 pr-4 text-white placeholder:text-white/30 focus:outline-none focus:border-af-gold/50 focus:bg-white/10 transition-all"
                                     placeholder="Enter your Username"
                                 />
@@ -101,8 +95,8 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onBack }) => {
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50" size={18} />
                                 <input
                                     type="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    name="password"
+                                    defaultValue=""
                                     className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-12 pr-4 text-white placeholder:text-white/30 focus:outline-none focus:border-af-gold/50 focus:bg-white/10 transition-all"
                                     placeholder="Enter your Password"
                                 />
@@ -111,12 +105,12 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onBack }) => {
 
                         <motion.button
                             type="submit"
-                            disabled={isLoading}
+                            disabled={isPending}
                             className="w-full bg-af-blue hover:bg-blue-600 text-white font-bold py-3.5 rounded-lg shadow-lg shadow-blue-900/50 transition-all transform hover:translate-y-[-1px] active:translate-y-[1px] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
                         >
-                            {isLoading ? (
+                            {isPending ? (
                                 <> <Loader2 size={18} className="animate-spin" /> Authenticating... </>
                             ) : (
                                 'Login Securely'
