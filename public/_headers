@@ -5,3 +5,4 @@
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   Cross-Origin-Opener-Policy: same-origin-allow-popups
   Cross-Origin-Embedder-Policy: unsafe-none
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' cdn.tailwindcss.com static.cloudflareinsights.com aistudiocdn.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com cdn.tailwindcss.com; img-src 'self' ecolearn.pages.dev afsh-web.pages.dev picsum.photos afsh-backend-blog-production.up.railway.app; connect-src 'self' afsh-backend-blog-production.up.railway.app form-backend-afsh-web.up.railway.app www.googleapis.com static.cloudflareinsights.com; frame-src 'self' www.google.com;

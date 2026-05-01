@@ -21,3 +21,9 @@
 **Vulnerability:** Potential information leakage via technical error details (stack traces, raw API errors) when using `console.error` directly in service layer components.
 **Learning:** Even if error interceptors are in place, direct usage of `console.error` in business logic or service modules can bypass centralized sanitization if not handled carefully, especially when logging raw error objects.
 **Prevention:** Use a centralized secure logging utility (e.g., `logErrorSecurely`) across all service-level modules to ensure that verbose error information is strictly limited to development environments, providing only sanitized feedback in production.
+
+## 2026-05-18 - [Security Enhancement] Implementation of Content Security Policy and Input Hardening
+
+**Vulnerability:** Lack of Content Security Policy (CSP) leaving the application vulnerable to XSS and injection. Public inputs lacking length constraints susceptible to client-side DoS.
+**Learning:** Even modern applications using reputable CDNs (Tailwind, Cloudflare, Google) require a tailored CSP to maintain a secure baseline. In React 19 / Vite environments with import maps, the CSP must carefully account for external script modules.
+**Prevention:** Implement defense-in-depth by combining strict CSPs with client-side input validation (maxLength) to mitigate resource exhaustion and script injection risks.
