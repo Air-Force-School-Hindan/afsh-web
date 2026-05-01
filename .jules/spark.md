@@ -9,3 +9,7 @@ Action: Replaced manual grouping loops (`events.forEach`) in `CalendarPageNew.ts
 ## 2025-02-18 - [ES2023 Immutable Array Methods]
 Learning: ES2023 introduces new array copying methods to JavaScript, such as `toSorted()` and `toReversed()`, that return a new array instead of modifying the original in-place. This improves code predictability, predictability and safety in functional programming patterns without requiring manual `.slice()` or spread `[...array]` cloning.
 Action: Refactored `GalleryPage.tsx` and `CalendarPageNew.tsx` to replace `[...events].sort()` and `Array.from(y).sort().reverse()` with `.toSorted()` and `.toReversed()` for cleaner and safer state derivation.
+
+## 2025-02-18 - [React 19: useActionState for Forms]
+Learning: React 19 introduces `useActionState` and native form `action` props, allowing us to manage form state (loading, errors, response) without manual `useState` boilerplate for every input. It encourages uncontrolled components, which reduces unnecessary re-renders.
+Action: Refactored `LoginPage.tsx` to use `useActionState` instead of controlled `useState` inputs, simplifying form submission and natively tracking `isPending`.
