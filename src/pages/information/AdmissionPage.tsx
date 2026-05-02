@@ -326,6 +326,7 @@ const AdmissionPage: React.FC = () => {
                       value={formData.name}
                       onChange={handleChange}
                       required
+                      maxLength={100}
                       placeholder="Enter student's full name"
                       className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-af-blue dark:focus:border-af-light transition-colors"
                     />
@@ -339,6 +340,7 @@ const AdmissionPage: React.FC = () => {
                       value={formData.email}
                       onChange={handleChange}
                       required
+                      maxLength={255}
                       placeholder="your.email@example.com"
                       className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-af-blue dark:focus:border-af-light transition-colors"
                     />
@@ -352,6 +354,7 @@ const AdmissionPage: React.FC = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       required
+                      maxLength={20}
                       placeholder="+91-XXXXXXXXXX"
                       className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-af-blue dark:focus:border-af-light transition-colors"
                     />
@@ -382,6 +385,7 @@ const AdmissionPage: React.FC = () => {
                     value={formData.guardianName}
                     onChange={handleChange}
                     required
+                    maxLength={100}
                     placeholder="Father's / Mother's name"
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-af-blue dark:focus:border-af-light transition-colors"
                   />
@@ -395,6 +399,7 @@ const AdmissionPage: React.FC = () => {
                     onChange={handleChange}
                     placeholder="Tell us about your interests, achievements, or any specific questions..."
                     rows={5}
+                    maxLength={2000}
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-af-blue dark:focus:border-af-light transition-colors resize-none"
                   ></textarea>
                 </div>
