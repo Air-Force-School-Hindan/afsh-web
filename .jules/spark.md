@@ -9,3 +9,7 @@ Action: Replaced manual grouping loops (`events.forEach`) in `CalendarPageNew.ts
 ## 2025-02-18 - [ES2023 Immutable Array Methods]
 Learning: ES2023 introduces new array copying methods to JavaScript, such as `toSorted()` and `toReversed()`, that return a new array instead of modifying the original in-place. This improves code predictability, predictability and safety in functional programming patterns without requiring manual `.slice()` or spread `[...array]` cloning.
 Action: Refactored `GalleryPage.tsx` and `CalendarPageNew.tsx` to replace `[...events].sort()` and `Array.from(y).sort().reverse()` with `.toSorted()` and `.toReversed()` for cleaner and safer state derivation.
+
+## 2025-05-03 - [React 19: Native Form Actions & useActionState]
+Learning: React 19 introduces native form actions and the `useActionState` hook, allowing forms to be handled uncontrolled without needing `useState` for every input, `e.preventDefault()`, or separate loading/error states. This significantly reduces boilerplate and improves performance by preventing unnecessary re-renders during typing.
+Action: Refactored `LoginPage.tsx` to replace 4 `useState` variables and a custom `handleSubmit` function with a single `useActionState` hook. Replaced `onSubmit` with `action`, and updated inputs to use `name` and `defaultValue`. This streamlines the authentication form logic and aligns with modern React standards.
