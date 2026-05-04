@@ -21,3 +21,9 @@
 **Vulnerability:** Potential information leakage via technical error details (stack traces, raw API errors) when using `console.error` directly in service layer components.
 **Learning:** Even if error interceptors are in place, direct usage of `console.error` in business logic or service modules can bypass centralized sanitization if not handled carefully, especially when logging raw error objects.
 **Prevention:** Use a centralized secure logging utility (e.g., `logErrorSecurely`) across all service-level modules to ensure that verbose error information is strictly limited to development environments, providing only sanitized feedback in production.
+
+## 2025-05-15 - [Security Enhancement] Standardized Input Length Constraints
+
+**Vulnerability:** Missing input length limits (maxLength) on public-facing forms, presenting a potential Denial of Service (DoS) risk through oversized payloads.
+**Learning:** While the application had some validation, many public entry points (Search, Login, Contact) were missing client-side enforcement of maximum lengths.
+**Prevention:** Standardize maximum lengths for common fields (e.g., Names: 100, Emails: 255 per RFC 5321, Phone: 20, Messages: 2000) across all forms to ensure consistent security bounds and improve UX by providing immediate feedback.
