@@ -1,7 +1,8 @@
 import { AlumniFormData, AlumniRegistrationResponse } from '../types/alumni';
 import { logErrorSecurely } from '../utils/security';
+import { getFormBackendURL } from '../config';
 
-const API_URL = import.meta.env.VITE_ALUMNI_API_URL || "https://form-backend-afsh-web.up.railway.app/api/alumni/register";
+const API_URL = import.meta.env.VITE_ALUMNI_API_URL || `${getFormBackendURL()}/api/alumni/register`;
 
 export const registerAlumni = async (data: AlumniFormData): Promise<AlumniRegistrationResponse> => {
   try {

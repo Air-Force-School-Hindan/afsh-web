@@ -90,6 +90,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onBack }) => {
                                     type="text"
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
+                                    maxLength={100}
                                     className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-12 pr-4 text-white placeholder:text-white/30 focus:outline-none focus:border-af-gold/50 focus:bg-white/10 transition-all"
                                     placeholder="Enter your Username"
                                 />
@@ -103,6 +104,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onBack }) => {
                                     type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
+                                    maxLength={100}
                                     className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-12 pr-4 text-white placeholder:text-white/30 focus:outline-none focus:border-af-gold/50 focus:bg-white/10 transition-all"
                                     placeholder="Enter your Password"
                                 />
