@@ -6,6 +6,7 @@ import PageAnimate from '../../components/ui/PageAnimate';
 import { fadeInUp, fadeIn, scaleIn, slideInFromLeft, slideInFromRight } from '../../utils/animations';
 import { useTinaPage } from '@/src/hooks/useTinaPage';
 import { logErrorSecurely, getSafeErrorMessage } from '../../utils/security';
+import { getFormBackendURL } from '../../config';
 
 const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -32,7 +33,7 @@ const ContactPage: React.FC = () => {
 
     try {
       const res = await fetch(
-        "https://form-backend-afsh-web.up.railway.app/api/contact/submit",
+        `${getFormBackendURL()}/api/contact/submit`,
         {
           method: "POST",
           headers: {
@@ -268,6 +269,7 @@ const ContactPage: React.FC = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
+                    maxLength={100}
                     placeholder="Your full name"
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-af-blue transition-all duration-300"
                   />
@@ -282,6 +284,7 @@ const ContactPage: React.FC = () => {
                       value={formData.email}
                       onChange={handleChange}
                       required
+                      maxLength={255}
                       placeholder="your@email.com"
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-af-blue transition-all duration-300"
                     />
@@ -293,6 +296,7 @@ const ContactPage: React.FC = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
+                      maxLength={20}
                       placeholder="+91 XXXXXXXXXX"
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-af-blue transition-all duration-300"
                     />
@@ -307,6 +311,7 @@ const ContactPage: React.FC = () => {
                     value={formData.subject}
                     onChange={handleChange}
                     required
+                    maxLength={200}
                     placeholder="What is this about?"
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-af-blue transition-all duration-300"
                   />
@@ -319,6 +324,7 @@ const ContactPage: React.FC = () => {
                     value={formData.message}
                     onChange={handleChange}
                     required
+                    maxLength={2000}
                     rows={5}
                     placeholder="Tell us more about your inquiry..."
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-af-blue transition-all duration-300 resize-none"

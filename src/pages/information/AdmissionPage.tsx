@@ -7,6 +7,7 @@ import PageAnimate from '../../components/ui/PageAnimate';
 import { fadeInUp } from '../../utils/animations';
 import { useTinaPage } from '@/src/hooks/useTinaPage';
 import { logErrorSecurely, getSafeErrorMessage } from '../../utils/security';
+import { getFormBackendURL } from '../../config';
 
 interface FormData {
   name: string;
@@ -66,7 +67,7 @@ const AdmissionPage: React.FC = () => {
 
     try {
       const res = await fetch(
-        "https://form-backend-afsh-web.up.railway.app/api/admission/inquiry",
+        `${getFormBackendURL()}/api/admission/inquiry`,
         {
           method: "POST",
           headers: {
@@ -326,6 +327,7 @@ const AdmissionPage: React.FC = () => {
                       value={formData.name}
                       onChange={handleChange}
                       required
+                      maxLength={100}
                       placeholder="Enter student's full name"
                       className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-af-blue dark:focus:border-af-light transition-colors"
                     />
@@ -339,6 +341,7 @@ const AdmissionPage: React.FC = () => {
                       value={formData.email}
                       onChange={handleChange}
                       required
+                      maxLength={255}
                       placeholder="your.email@example.com"
                       className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-af-blue dark:focus:border-af-light transition-colors"
                     />
@@ -352,6 +355,7 @@ const AdmissionPage: React.FC = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       required
+                      maxLength={20}
                       placeholder="+91-XXXXXXXXXX"
                       className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-af-blue dark:focus:border-af-light transition-colors"
                     />
@@ -382,6 +386,7 @@ const AdmissionPage: React.FC = () => {
                     value={formData.guardianName}
                     onChange={handleChange}
                     required
+                    maxLength={100}
                     placeholder="Father's / Mother's name"
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-af-blue dark:focus:border-af-light transition-colors"
                   />
@@ -393,6 +398,7 @@ const AdmissionPage: React.FC = () => {
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
+                    maxLength={2000}
                     placeholder="Tell us about your interests, achievements, or any specific questions..."
                     rows={5}
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-af-blue dark:focus:border-af-light transition-colors resize-none"
