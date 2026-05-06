@@ -21,3 +21,9 @@
 **Vulnerability:** Potential information leakage via technical error details (stack traces, raw API errors) when using `console.error` directly in service layer components.
 **Learning:** Even if error interceptors are in place, direct usage of `console.error` in business logic or service modules can bypass centralized sanitization if not handled carefully, especially when logging raw error objects.
 **Prevention:** Use a centralized secure logging utility (e.g., `logErrorSecurely`) across all service-level modules to ensure that verbose error information is strictly limited to development environments, providing only sanitized feedback in production.
+
+## 2025-05-15 - [Security Fix] Input Validation and Secure Error Handling in Alumni Registration
+
+**Vulnerability:** Missing input length limits (`maxLength`) on the alumni registration form, posing a potential client-side DoS risk from oversized payloads. Additionally, raw error messages were being rendered in the UI.
+**Learning:** Even when centralized logging is in place, individual page components must explicitly use sanitization helpers (like `getSafeErrorMessage`) to prevent technical data leakage in the UI.
+**Prevention:** Standardize `maxLength` constraints across all public-facing forms (Names: 100, Emails: 255, Phone: 20, Messages: 2000) and always wrap UI error displays in sanitization utilities.
