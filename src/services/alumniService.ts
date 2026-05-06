@@ -1,12 +1,14 @@
 import { AlumniFormData, AlumniRegistrationResponse } from '../types/alumni';
 import { logErrorSecurely } from '../utils/security';
-import { getFormBackendURL } from '../config';
-
-const API_URL = import.meta.env.VITE_ALUMNI_API_URL || `${getFormBackendURL()}/api/alumni/register`;
 
 export const registerAlumni = async (data: AlumniFormData): Promise<AlumniRegistrationResponse> => {
   try {
-    const response = await fetch(API_URL, {
+    const apiUrl = import.meta.env.VITE_ALUMNI_API_URL;
+    if (!apiUrl) {
+      throw new Error("VITE_ALUMNI_API_URL is not configured.");
+    }
+
+    const response = await fetch(apiUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
