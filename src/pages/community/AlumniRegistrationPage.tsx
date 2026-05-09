@@ -7,6 +7,7 @@ import PageAnimate from '../../components/ui/PageAnimate';
 import { fadeInUp, fadeIn, scaleIn } from '../../utils/animations';
 import { AlumniFormData } from '../../types/alumni';
 import { registerAlumni } from '../../services/alumniService';
+import { getSafeErrorMessage } from '../../utils/security';
 
 
 const AlumniRegistrationPage: React.FC = () => {
@@ -61,8 +62,10 @@ const AlumniRegistrationPage: React.FC = () => {
     if (!formData.lastName.trim()) errors.lastName = 'Last name is required';
     if (!formData.email.trim()) errors.email = 'Email is required';
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) errors.email = 'Invalid email format';
+
+    // Sentinel: Strict phone validation with length limits to prevent DoS and malformed data
     if (!formData.phone.trim()) errors.phone = 'Phone number is required';
-    else if (!/^[+]?[\d\s\-\(\)]+$/.test(formData.phone)) errors.phone = 'Invalid phone format';
+    else if (!/^\+?[\d\s\-()]{7,20}$/.test(formData.phone)) errors.phone = 'Invalid phone format';
     if (!formData.batchYear) errors.batchYear = 'Batch year is required';
     if (!formData.passingYear) errors.passingYear = 'Passing year is required';
     if (!formData.currentOccupation.trim()) errors.currentOccupation = 'Current occupation is required';
@@ -106,7 +109,8 @@ const AlumniRegistrationPage: React.FC = () => {
       }
 
     } catch (err: any) {
-      setError(err.message || "Something went wrong");
+      // Sentinel: Prevent technical info leakage by using sanitized error messages
+      setError(getSafeErrorMessage(err, "Submission failed. Please try again later."));
     } finally {
       setIsSubmitting(false);
     }
@@ -250,6 +254,7 @@ const AlumniRegistrationPage: React.FC = () => {
                       value={formData.firstName}
                       onChange={handleChange}
                       required
+                      maxLength={100}
                       placeholder="Enter your first name"
                       className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-af-blue focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white ${fieldErrors.firstName ? 'border-red-500 dark:border-red-400' : 'border-gray-300 dark:border-gray-600'
                         }`}
@@ -268,6 +273,7 @@ const AlumniRegistrationPage: React.FC = () => {
                       value={formData.lastName}
                       onChange={handleChange}
                       required
+                      maxLength={100}
                       placeholder="Enter your last name"
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-af-blue focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     />
@@ -282,6 +288,7 @@ const AlumniRegistrationPage: React.FC = () => {
                       value={formData.email}
                       onChange={handleChange}
                       required
+                      maxLength={255}
                       placeholder="Enter your email address"
                       className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-af-blue focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white ${fieldErrors.email ? 'border-red-500 dark:border-red-400' : 'border-gray-300 dark:border-gray-600'
                         }`}
@@ -300,6 +307,7 @@ const AlumniRegistrationPage: React.FC = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       required
+                      maxLength={20}
                       placeholder="+91 98765 43210"
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-af-blue focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     />
