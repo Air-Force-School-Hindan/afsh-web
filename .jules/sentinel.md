@@ -21,3 +21,9 @@
 **Vulnerability:** Potential information leakage via technical error details (stack traces, raw API errors) when using `console.error` directly in service layer components.
 **Learning:** Even if error interceptors are in place, direct usage of `console.error` in business logic or service modules can bypass centralized sanitization if not handled carefully, especially when logging raw error objects.
 **Prevention:** Use a centralized secure logging utility (e.g., `logErrorSecurely`) across all service-level modules to ensure that verbose error information is strictly limited to development environments, providing only sanitized feedback in production.
+
+## 2025-05-15 - [Security Enhancement] Implementation of Content Security Policy (CSP)
+
+**Vulnerability:** Missing Content Security Policy (CSP) header. This leaves the application more vulnerable to Cross-Site Scripting (XSS) and data injection attacks as there's no browser-level restriction on where scripts, styles, or images can be loaded from.
+**Learning:** For projects using a variety of external services (TinaCMS, Sanity, Google APIs, Tailwind CDN), a CSP must be carefully crafted to include all necessary domains to avoid breaking functionality while still providing protection.
+**Prevention:** Always implement a strict CSP and maintain it as new external dependencies are added to the project.
