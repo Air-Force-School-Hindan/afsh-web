@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Layout from './components/layout/Layout';
+import './index.css';
 
 // Lazy load page components for code splitting
 const HomePage = lazy(() => import('./pages/core/HomePage'));
