@@ -70,12 +70,15 @@ interface TopperSectionProps {
 }
 
 const TopperSection: React.FC<TopperSectionProps> = ({
-  class12Toppers = defaultToppers12,
-  class10Toppers = defaultToppers10
+  class12Toppers,
+  class10Toppers
 }) => {
   const [activeTab, setActiveTab] = useState<'XII' | 'X'>('X');
 
-  const currentToppers = activeTab === 'XII' ? class12Toppers : class10Toppers;
+  const toppers12 = class12Toppers || defaultToppers12;
+  const toppers10 = class10Toppers || defaultToppers10;
+
+  const currentToppers = activeTab === 'XII' ? toppers12 : toppers10;
 
   const getRankIcon = (position: number) => {
     switch (position) {
