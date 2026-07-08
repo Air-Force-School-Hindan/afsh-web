@@ -70,10 +70,14 @@ interface TopperSectionProps {
 }
 
 const TopperSection: React.FC<TopperSectionProps> = ({
-  class12Toppers = defaultToppers12,
-  class10Toppers = defaultToppers10
+  class12Toppers: class12ToppersProp,
+  class10Toppers: class10ToppersProp
 }) => {
   const [activeTab, setActiveTab] = useState<'XII' | 'X'>('X');
+
+  // Sentinel: Use explicit fallbacks to handle null from CMS
+  const class12Toppers = class12ToppersProp || defaultToppers12;
+  const class10Toppers = class10ToppersProp || defaultToppers10;
 
   const currentToppers = activeTab === 'XII' ? class12Toppers : class10Toppers;
 

@@ -20,7 +20,7 @@ const NoticesPage: React.FC = () => {
         const loadNotices = async () => {
             try {
                 const response = await fetchNotices();
-                setNotices(response.data);
+                setNotices(response?.data || []);
             } catch (err) {
                 logErrorSecurely('Failed to load notices', err);
                 setError('Failed to load notices. Please try again later.');

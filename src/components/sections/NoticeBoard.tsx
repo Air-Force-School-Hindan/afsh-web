@@ -21,7 +21,7 @@ const NoticeBoard: React.FC<NoticeBoardProps> = ({ title = 'Notice Board', block
     const loadNotices = async () => {
       try {
         const response = await fetchRecentNotices(5); // Fetch top 5 notices
-        setNotices(response.data);
+        setNotices(response?.data || []);
       } catch (error) {
         logErrorSecurely('Failed to load notices', error);
       } finally {
@@ -116,14 +116,14 @@ const NoticeBoard: React.FC<NoticeBoardProps> = ({ title = 'Notice Board', block
                       <div key={notice.id} className="group">
                         <button
                           onClick={() => toggleNotice(notice.id)}
-                          className={`w-full text-left p-6 flex items-start gap-6 transition-all duration-300 focus:outline-none \${isOpen ? 'bg-blue-50/30 dark:bg-af-blue/5' : 'hover:bg-gray-50 dark:hover:bg-gray-800/50'}`}
+                          className={`w-full text-left p-6 flex items-start gap-6 transition-all duration-300 focus:outline-none ${isOpen ? 'bg-blue-50/30 dark:bg-af-blue/5' : 'hover:bg-gray-50 dark:hover:bg-gray-800/50'}`}
                         >
                           <div className="flex-shrink-0 flex flex-col items-center justify-center bg-white dark:bg-gray-800 text-af-blue dark:text-af-light w-16 h-16 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700 transition-transform duration-500 group-hover:scale-105 group-hover:shadow-lg">
                             <span className="text-[10px] font-black uppercase tracking-tighter opacity-60">{formattedDate.month}</span>
                             <span className="text-2xl font-black leading-none">{formattedDate.day}</span>
                           </div>
                           <div className="flex-grow pt-1">
-                            <h4 className={`font-bold transition-colors duration-300 text-lg leading-snug \${isOpen ? 'text-af-blue dark:text-af-light' : 'text-gray-800 dark:text-gray-200 group-hover:text-af-blue'}`}>
+                            <h4 className={`font-bold transition-colors duration-300 text-lg leading-snug ${isOpen ? 'text-af-blue dark:text-af-light' : 'text-gray-800 dark:text-gray-200 group-hover:text-af-blue'}`}>
                               {title}
                               {isNew && (
                                 <span className="inline-block ml-3 bg-red-500 text-white text-[9px] font-black px-2 py-0.5 rounded-full animate-pulse shadow-lg shadow-red-500/30">
@@ -135,7 +135,7 @@ const NoticeBoard: React.FC<NoticeBoardProps> = ({ title = 'Notice Board', block
                               {isOpen ? 'Click to collapse' : 'Click to read detailed announcement'}
                             </p>
                           </div>
-                          <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 \${isOpen ? 'bg-af-blue text-white rotate-180' : 'bg-gray-100 dark:bg-gray-800 text-gray-400 group-hover:bg-af-blue/10 group-hover:text-af-blue'}`}>
+                          <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 ${isOpen ? 'bg-af-blue text-white rotate-180' : 'bg-gray-100 dark:bg-gray-800 text-gray-400 group-hover:bg-af-blue/10 group-hover:text-af-blue'}`}>
                             <ChevronDown size={20} />
                           </div>
                         </button>
@@ -208,7 +208,7 @@ const NoticeBoard: React.FC<NoticeBoardProps> = ({ title = 'Notice Board', block
                       whileHover={{ x: 5 }}
                       className="flex gap-4 group cursor-pointer"
                     >
-                      <div className={`w-1 h-full min-h-[45px] \${event.color} rounded-full transition-all group-hover:w-1.5`}></div>
+                      <div className={`w-1 h-full min-h-[45px] ${event.color} rounded-full transition-all group-hover:w-1.5`}></div>
                       <div>
                         <h4 className="font-bold text-gray-900 dark:text-gray-100 text-sm group-hover:text-af-blue transition-colors">{event.title}</h4>
                         <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{event.date}</p>

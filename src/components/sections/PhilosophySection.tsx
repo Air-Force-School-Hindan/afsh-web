@@ -24,9 +24,12 @@ const defaultItems: PhilosophyItem[] = [
 const PhilosophySection: React.FC<PhilosophySectionProps> = ({
     title = 'Fostering Excellence, Integrity, and Service',
     subtitle = 'Our Philosophy',
-    items = defaultItems,
+    items: itemsProp,
     block
 }) => {
+    // Sentinel: Use explicit fallbacks to handle null from CMS
+    const items = itemsProp || defaultItems;
+
     return (
         <motion.section
             id="academics"

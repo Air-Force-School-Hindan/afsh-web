@@ -99,9 +99,12 @@ const FacultyCard = React.memo(({
 });
 
 const FacultyCarousel: React.FC<FacultyCarouselProps> = ({
-    faculty,
+    faculty: facultyProp,
     autoSlideInterval = 5000
 }) => {
+    // Sentinel: Use explicit fallbacks to handle null from CMS
+    const faculty = facultyProp || [];
+
     const [emblaRef, emblaApi] = useEmblaCarousel({
         loop: true,
         duration: 30,
