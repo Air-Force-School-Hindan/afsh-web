@@ -1,6 +1,7 @@
 import { apiClient } from '../api/client';
 import { StrapiResponse, Notice } from '../types/strapi';
 import { logErrorSecurely } from '../utils/security';
+import { flattenStrapi } from '../utils/strapi';
 
 export const fetchNotices = async (page = 1, pageSize = 25): Promise<StrapiResponse<Notice[]>> => {
   try {
@@ -8,12 +9,13 @@ export const fetchNotices = async (page = 1, pageSize = 25): Promise<StrapiRespo
       `/api/notices?populate=file&sort=date:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}`
     );
 
-    // Sentinel: Ensure data exists before returning to prevent component crashes
-    if (!response.data || !response.data.data) {
-        return { data: [], meta: { pagination: { page, pageSize, pageCount: 0, total: 0 } } };
-    }
+    // Flatten and normalize response data
+    const flattenedData = flattenStrapi(response.data?.data || response.data);
 
-    return response.data;
+    return {
+        data: Array.isArray(flattenedData) ? flattenedData : [],
+        meta: response.data?.meta || { pagination: { page, pageSize, pageCount: 0, total: 0 } }
+    };
   } catch (error) {
     logErrorSecurely('Failed to fetch notices', error);
     throw error;

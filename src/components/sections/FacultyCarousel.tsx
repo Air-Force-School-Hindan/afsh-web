@@ -102,10 +102,11 @@ const FacultyCarousel: React.FC<FacultyCarouselProps> = ({
     faculty: facultyProp,
     autoSlideInterval = 5000
 }) => {
-    const displayFaculty = faculty || [];
+    // Sentinel: Use explicit fallbacks to handle null from CMS
+    const faculty = facultyProp || [];
 
     const [emblaRef, emblaApi] = useEmblaCarousel({
-        loop: displayFaculty.length > 0,
+        loop: true,
         duration: 30,
         align: 'start'
     }, [
@@ -160,7 +161,7 @@ const FacultyCarousel: React.FC<FacultyCarouselProps> = ({
             <div className="container mx-auto px-6">
                 <div className="overflow-hidden" ref={emblaRef}>
                     <div className="flex -ml-6">
-                        {displayFaculty.map((member, index) => (
+                        {faculty.map((member, index) => (
                             <FacultyCard
                                 key={index}
                                 member={member}
@@ -183,7 +184,7 @@ const FacultyCarousel: React.FC<FacultyCarouselProps> = ({
             {/* Dots Pagination */}
             <div className="container mx-auto px-6 relative z-10">
                 <div className="flex justify-center mt-12 gap-3">
-                    {displayFaculty.map((_, idx) => (
+                    {faculty.map((_, idx) => (
                         <button
                             key={idx}
                             onClick={() => emblaApi?.scrollTo(idx)}
@@ -198,7 +199,7 @@ const FacultyCarousel: React.FC<FacultyCarouselProps> = ({
             </div>
 
             {/* Expanded Modal Layer with Transitions */}
-            {openedMemberIndex !== null && displayFaculty[openedMemberIndex] && (
+            {openedMemberIndex !== null && (
                 <div
                     className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-10 pointer-events-none"
                     onClick={() => setOpenedMemberIndex(null)}
@@ -215,8 +216,8 @@ const FacultyCarousel: React.FC<FacultyCarouselProps> = ({
                     >
                         <div className="w-full md:w-2/5 h-[300px] md:h-auto relative">
                             <img
-                                src={displayFaculty[openedMemberIndex].image}
-                                alt={displayFaculty[openedMemberIndex].name}
+                                src={faculty[openedMemberIndex].image}
+                                alt={faculty[openedMemberIndex].name}
                                 className="w-full h-full object-cover"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent md:hidden"></div>

@@ -110,7 +110,7 @@ const NoticesPage: React.FC = () => {
                         <div className="divide-y divide-gray-100 dark:divide-gray-800">
                             {notices.map((notice) => {
                                 const { title, date, content, isNew, file } = notice;
-                                const formattedDate = formatDate(date);
+                                const formattedDate = formatDate(date || new Date().toISOString());
                                 const isOpen = openNoticeId === notice.id;
                                 const fileUrl = file?.url ? getStrapiMedia(file.url) : null;
 

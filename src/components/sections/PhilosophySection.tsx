@@ -24,10 +24,12 @@ const defaultItems: PhilosophyItem[] = [
 const PhilosophySection: React.FC<PhilosophySectionProps> = ({
     title = 'Fostering Excellence, Integrity, and Service',
     subtitle = 'Our Philosophy',
-    items,
+    items: itemsProp,
     block
 }) => {
-    const displayItems = items || defaultItems;
+    // Sentinel: Use explicit fallbacks to handle null from CMS
+    const items = itemsProp || defaultItems;
+
     return (
         <motion.section
             id="academics"
@@ -51,7 +53,7 @@ const PhilosophySection: React.FC<PhilosophySectionProps> = ({
                     {title}
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-12">
-                    {displayItems.map((item, idx) => (
+                    {items.map((item, idx) => (
                         <motion.div
                             key={idx}
                             whileHover={{ y: -10 }}

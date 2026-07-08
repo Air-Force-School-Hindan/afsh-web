@@ -70,15 +70,16 @@ interface TopperSectionProps {
 }
 
 const TopperSection: React.FC<TopperSectionProps> = ({
-  class12Toppers,
-  class10Toppers
+  class12Toppers: class12ToppersProp,
+  class10Toppers: class10ToppersProp
 }) => {
   const [activeTab, setActiveTab] = useState<'XII' | 'X'>('X');
 
-  const toppers12 = class12Toppers || defaultToppers12;
-  const toppers10 = class10Toppers || defaultToppers10;
+  // Sentinel: Use explicit fallbacks to handle null from CMS
+  const class12Toppers = class12ToppersProp || defaultToppers12;
+  const class10Toppers = class10ToppersProp || defaultToppers10;
 
-  const currentToppers = activeTab === 'XII' ? toppers12 : toppers10;
+  const currentToppers = activeTab === 'XII' ? class12Toppers : class10Toppers;
 
   const getRankIcon = (position: number) => {
     switch (position) {

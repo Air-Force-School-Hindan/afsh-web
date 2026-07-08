@@ -100,7 +100,7 @@ const LatestNews: React.FC<LatestNewsProps> = ({ title, count = 3, block }) => {
                 </motion.span>
 
                 <h3 className="text-white font-serif font-bold text-3xl md:text-4xl leading-tight mb-8 drop-shadow-2xl group-hover:text-af-light transition-colors duration-300 line-clamp-3">
-                  {item.title}
+                  {item.title || 'Untitled News'}
                 </h3>
 
                 <Link
