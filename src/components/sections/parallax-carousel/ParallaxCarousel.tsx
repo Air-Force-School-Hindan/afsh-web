@@ -58,7 +58,7 @@ interface ParallaxCarouselProps {
 }
 
 const ParallaxCarousel: React.FC<ParallaxCarouselProps> = ({ slides }) => {
-    const displaySlides = slides || defaultSlides;
+    const displaySlides = Array.isArray(slides) ? slides : defaultSlides;
     const [emblaRef, emblaApi] = useEmblaCarousel(OPTIONS);
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
@@ -76,7 +76,8 @@ const ParallaxCarousel: React.FC<ParallaxCarouselProps> = ({ slides }) => {
     }, []);
 
     const setTweenFactor = useCallback((emblaApi: EmblaCarouselType) => {
-        tweenFactor.current = TWEEN_FACTOR_BASE * emblaApi.scrollSnapList().length;
+        const scrollSnapList = emblaApi.scrollSnapList();
+        tweenFactor.current = TWEEN_FACTOR_BASE * (Array.isArray(scrollSnapList) ? scrollSnapList.length : 0);
     }, []);
 
     const tweenParallax = useCallback(
@@ -85,8 +86,11 @@ const ParallaxCarousel: React.FC<ParallaxCarouselProps> = ({ slides }) => {
             const scrollProgress = emblaApi.scrollProgress();
             const slidesInView = emblaApi.slidesInView();
             const isScrollEvent = eventName === 'scroll';
+            const scrollSnapList = emblaApi.scrollSnapList();
 
-            emblaApi.scrollSnapList().forEach((scrollSnap, snapIndex) => {
+            if (!Array.isArray(scrollSnapList)) return;
+
+            scrollSnapList.forEach((scrollSnap, snapIndex) => {
                 let diffToTarget = scrollSnap - scrollProgress;
                 const slidesInSnap = engine.slideRegistry[snapIndex];
 

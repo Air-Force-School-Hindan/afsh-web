@@ -29,8 +29,10 @@ interface DayViewModalProps {
 const DayViewModal: React.FC<DayViewModalProps> = ({ isOpen, onClose, date, events }) => {
   if (!isOpen) return null;
 
+  const displayEvents = Array.isArray(events) ? events : [];
+
   // 🛰️ Spark: Replaced mutating .sort() on a shallow copy with modern ES2023 .toSorted()
-  const sortedEvents = events.toSorted((a, b) => {
+  const sortedEvents = displayEvents.toSorted((a, b) => {
     if (a.allDay && !b.allDay) return -1;
     if (!a.allDay && b.allDay) return 1;
     return (a.startTime || '').localeCompare(b.startTime || '');
@@ -179,7 +181,8 @@ const CalendarPageNew: React.FC = () => {
               const calendarId = calendarIds[index];
               const isHoliday = calendarId.includes('holiday') || calendarId.includes('en.indian');
 
-              const calendarEvents = data.items.map((event: any) => {
+              const calendarEvents = (Array.isArray(data.items) ? data.items : []).map((event: any) => {
+                if (!event || !event.start) return null;
                 const startDate = new Date(event.start.dateTime || event.start.date);
                 const isAllDay = !event.start.dateTime;
 
@@ -187,16 +190,16 @@ const CalendarPageNew: React.FC = () => {
                   date: startDate.getDate(),
                   month: startDate.getMonth(),
                   year: startDate.getFullYear(),
-                  title: event.summary,
+                  title: event.summary || 'Untitled Event',
                   type: isHoliday ? 'holiday' : 'event',
                   color: isHoliday
                     ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300'
                     : 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300',
                   startTime: event.start.dateTime || event.start.date,
-                  endTime: event.end.dateTime || event.end.date,
+                  endTime: event.end?.dateTime || event.end?.date,
                   allDay: isAllDay
                 };
-              });
+              }).filter(Boolean);
               allNewEvents.push(...calendarEvents);
             }
           });
@@ -232,12 +235,14 @@ const CalendarPageNew: React.FC = () => {
 
   // Optimize event lookup by grouping events by date
   const eventsByDate = useMemo(() => {
+    const safeEvents = Array.isArray(events) ? events : [];
     // 🛰️ Spark: Using native ES2024 Object.groupBy for cleaner and more declarative grouping
-    return Object.groupBy(events, (event) => `${event.year}-${event.month}-${event.date}`);
+    return Object.groupBy(safeEvents, (event) => `${event.year}-${event.month}-${event.date}`);
   }, [events]);
 
   const memoizedUpcomingEvents = useMemo(() => {
-    return events
+    const safeEvents = Array.isArray(events) ? events : [];
+    return safeEvents
       .filter(e => e.month === currentDate.getMonth() && e.year === currentDate.getFullYear())
       .sort((a, b) => a.date - b.date);
   }, [events, currentDate]);

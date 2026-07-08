@@ -8,6 +8,10 @@ export const fetchNotices = async (page = 1, pageSize = 25): Promise<StrapiRespo
       `/api/notices?populate=file&sort=date:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}`
     );
 
+    if (response.data && !Array.isArray(response.data.data)) {
+        response.data.data = [];
+    }
+
     return response.data;
   } catch (error) {
     logErrorSecurely('Failed to fetch notices', error);

@@ -127,7 +127,7 @@ const PostDetails = () => {
                             </span>
                             <span className="flex items-center gap-2">
                                 <User size={16} className="text-af-blue dark:text-af-gold" /> {
-                                    (post.authors && post.authors.length > 0)
+                                    (Array.isArray(post.authors) && post.authors.length > 0)
                                         ? post.authors.map(a => a.name).join(', ')
                                         : post.author?.name ||
                                         (post.createdBy?.firstname || post.createdBy?.lastname
@@ -154,7 +154,7 @@ const PostDetails = () => {
             </motion.article>
 
             {/* Related Posts Section */}
-            {relatedPosts.length > 0 && (
+            {Array.isArray(relatedPosts) && relatedPosts.length > 0 && (
                 <section className="container mx-auto px-6 py-24 border-t border-gray-100 dark:border-gray-800">
                     <div className="max-w-5xl mx-auto">
                         <div className="flex items-center justify-between mb-12">

@@ -55,7 +55,7 @@ const NoticeBoard: React.FC<NoticeBoardProps> = ({ title = 'Notice Board', block
           <div className="marquee-content text-sm font-bold tracking-wide">
             {loading ? (
               <span className="mx-12">Loading updates...</span>
-            ) : notices.length > 0 ? (
+            ) : Array.isArray(notices) && notices.length > 0 ? (
               notices.map((n) => (
                 <span key={n.id} className="mx-12 inline-flex items-center group cursor-pointer">
                   <span className="w-2 h-2 bg-af-gold rounded-full mr-3 group-hover:scale-150 transition-transform"></span>
@@ -101,12 +101,13 @@ const NoticeBoard: React.FC<NoticeBoardProps> = ({ title = 'Notice Board', block
                   <div className="p-10 flex justify-center">
                     <Loader2 className="animate-spin text-af-blue" size={30} />
                   </div>
-                ) : notices.length === 0 ? (
+                ) : !Array.isArray(notices) || notices.length === 0 ? (
                   <div className="p-10 text-center text-gray-500">
                     No notices available at the moment.
                   </div>
                 ) : (
                   notices.map((notice) => {
+                    if (!notice) return null;
                     const { title, date, content, isNew, file } = notice;
                     const formattedDate = formatDate(date);
                     const isOpen = openNoticeId === notice.id;
@@ -116,14 +117,14 @@ const NoticeBoard: React.FC<NoticeBoardProps> = ({ title = 'Notice Board', block
                       <div key={notice.id} className="group">
                         <button
                           onClick={() => toggleNotice(notice.id)}
-                          className={`w-full text-left p-6 flex items-start gap-6 transition-all duration-300 focus:outline-none \${isOpen ? 'bg-blue-50/30 dark:bg-af-blue/5' : 'hover:bg-gray-50 dark:hover:bg-gray-800/50'}`}
+                          className={`w-full text-left p-6 flex items-start gap-6 transition-all duration-300 focus:outline-none ${isOpen ? 'bg-blue-50/30 dark:bg-af-blue/5' : 'hover:bg-gray-50 dark:hover:bg-gray-800/50'}`}
                         >
                           <div className="flex-shrink-0 flex flex-col items-center justify-center bg-white dark:bg-gray-800 text-af-blue dark:text-af-light w-16 h-16 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700 transition-transform duration-500 group-hover:scale-105 group-hover:shadow-lg">
                             <span className="text-[10px] font-black uppercase tracking-tighter opacity-60">{formattedDate.month}</span>
                             <span className="text-2xl font-black leading-none">{formattedDate.day}</span>
                           </div>
                           <div className="flex-grow pt-1">
-                            <h4 className={`font-bold transition-colors duration-300 text-lg leading-snug \${isOpen ? 'text-af-blue dark:text-af-light' : 'text-gray-800 dark:text-gray-200 group-hover:text-af-blue'}`}>
+                            <h4 className={`font-bold transition-colors duration-300 text-lg leading-snug ${isOpen ? 'text-af-blue dark:text-af-light' : 'text-gray-800 dark:text-gray-200 group-hover:text-af-blue'}`}>
                               {title}
                               {isNew && (
                                 <span className="inline-block ml-3 bg-red-500 text-white text-[9px] font-black px-2 py-0.5 rounded-full animate-pulse shadow-lg shadow-red-500/30">
@@ -135,7 +136,7 @@ const NoticeBoard: React.FC<NoticeBoardProps> = ({ title = 'Notice Board', block
                               {isOpen ? 'Click to collapse' : 'Click to read detailed announcement'}
                             </p>
                           </div>
-                          <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 \${isOpen ? 'bg-af-blue text-white rotate-180' : 'bg-gray-100 dark:bg-gray-800 text-gray-400 group-hover:bg-af-blue/10 group-hover:text-af-blue'}`}>
+                          <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 ${isOpen ? 'bg-af-blue text-white rotate-180' : 'bg-gray-100 dark:bg-gray-800 text-gray-400 group-hover:bg-af-blue/10 group-hover:text-af-blue'}`}>
                             <ChevronDown size={20} />
                           </div>
                         </button>

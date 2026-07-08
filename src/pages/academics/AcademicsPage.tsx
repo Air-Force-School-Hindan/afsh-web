@@ -125,7 +125,7 @@ const AcademicsPage: React.FC = () => {
               </div>
               <p className="text-gray-700 dark:text-gray-300 mb-6">{item.description}</p>
               <div className="space-y-2">
-                {item.features.map((feature, fidx) => (
+                {Array.isArray(item.features) && item.features.map((feature, fidx) => (
                   <div key={fidx} className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
                     <CheckCircle size={18} className="text-green-500 flex-shrink-0" />
                     <span className="text-sm font-medium">{feature}</span>
@@ -204,7 +204,7 @@ const AcademicsPage: React.FC = () => {
                           <span>📖</span> Subjects Offered
                         </h4>
                         <ul className="space-y-2">
-                          {dept.subjects.map((subject, idx) => (
+                          {Array.isArray(dept.subjects) && dept.subjects.map((subject, idx) => (
                             <li key={idx} className="text-gray-700 dark:text-gray-300 flex items-center gap-2">
                               <span className="w-2 h-2 bg-af-blue dark:bg-af-light rounded-full"></span>
                               {subject}
@@ -216,7 +216,7 @@ const AcademicsPage: React.FC = () => {
                         <div className="mb-4">
                           <h4 className="font-bold text-gray-900 dark:text-white mb-3">🏆 Achievements</h4>
                           <ul className="space-y-2">
-                            {dept.highlights.map((highlight, idx) => (
+                            {Array.isArray(dept.highlights) && dept.highlights.map((highlight, idx) => (
                               <li key={idx} className="text-gray-700 dark:text-gray-300 flex items-center gap-2">
                                 <span className="text-af-gold">★</span>
                                 {highlight}

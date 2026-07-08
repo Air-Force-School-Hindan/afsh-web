@@ -30,11 +30,14 @@ const renderText = (node: TextNode, index: number) => {
 };
 
 const renderBlock = (block: any, index: number): React.ReactNode => {
+    if (!block) return null;
+    const children = Array.isArray(block.children) ? block.children : [];
+
     switch (block.type) {
         case 'paragraph':
             return (
                 <p key={index} className="mb-4 leading-relaxed">
-                    {block.children.map((child: any, i: number) =>
+                    {children.map((child: any, i: number) =>
                         child.type === 'text' ? renderText(child, i) : renderBlock(child, i)
                     )}
                 </p>
@@ -52,7 +55,7 @@ const renderBlock = (block: any, index: number): React.ReactNode => {
             ][block.level || 1];
             return (
                 <HeadingTag key={index} className={headingClasses}>
-                    {block.children.map((child: any, i: number) =>
+                    {children.map((child: any, i: number) =>
                         child.type === 'text' ? renderText(child, i) : renderBlock(child, i)
                     )}
                 </HeadingTag>
@@ -62,13 +65,13 @@ const renderBlock = (block: any, index: number): React.ReactNode => {
             const listClasses = block.format === 'ordered' ? 'list-decimal ml-6 mb-4' : 'list-disc ml-6 mb-4';
             return (
                 <ListTag key={index} className={listClasses}>
-                    {block.children.map((child: any, i: number) => renderBlock(child, i))}
+                    {children.map((child: any, i: number) => renderBlock(child, i))}
                 </ListTag>
             );
         case 'list-item':
             return (
                 <li key={index} className="mb-1">
-                    {block.children.map((child: any, i: number) =>
+                    {children.map((child: any, i: number) =>
                         child.type === 'text' ? renderText(child, i) : renderBlock(child, i)
                     )}
                 </li>
@@ -76,12 +79,13 @@ const renderBlock = (block: any, index: number): React.ReactNode => {
         case 'quote':
             return (
                 <blockquote key={index} className="border-l-4 border-af-blue pl-4 italic my-6 text-gray-700 dark:text-gray-300">
-                    {block.children.map((child: any, i: number) =>
+                    {children.map((child: any, i: number) =>
                         child.type === 'text' ? renderText(child, i) : renderBlock(child, i)
                     )}
                 </blockquote>
             );
         case 'image':
+            if (!block.image) return null;
             return (
                 <div key={index} className="my-8">
                     <img

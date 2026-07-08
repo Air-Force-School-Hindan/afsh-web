@@ -75,12 +75,12 @@ const TopperSection: React.FC<TopperSectionProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<'XII' | 'X'>('X');
 
-  const toppers12 = class12Toppers || defaultToppers12;
-  const toppers10 = class10Toppers || defaultToppers10;
+  const toppers12 = Array.isArray(class12Toppers) ? class12Toppers : defaultToppers12;
+  const toppers10 = Array.isArray(class10Toppers) ? class10Toppers : defaultToppers10;
 
-  const currentToppers = activeTab === 'XII' ? toppers12 : toppers10;
+  const currentToppers = (activeTab === 'XII' ? toppers12 : toppers10) || [];
 
-  const getRankIcon = (position: number) => {
+  const getRankIcon = (position?: number) => {
     switch (position) {
       case 1:
         return <Trophy className="w-6 h-6 text-white" />;
@@ -196,13 +196,13 @@ const TopperSection: React.FC<TopperSectionProps> = ({
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">Score</span>
                   <span className="text-lg font-bold text-af-blue dark:text-af-light">
-                    {topper.percentage.toFixed(2)}%
+                    {(topper.percentage || 0).toFixed(2)}%
                   </span>
                 </div>
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
                   <div
                     className="bg-gradient-to-r from-af-blue to-af-light dark:from-af-light dark:to-blue-300 h-full rounded-full transition-all duration-1000 ease-out group-hover:from-af-gold group-hover:to-af-light"
-                    style={{ width: `${topper.percentage}%` }}
+                    style={{ width: `${topper.percentage || 0}%` }}
                   />
                 </div>
               </div>

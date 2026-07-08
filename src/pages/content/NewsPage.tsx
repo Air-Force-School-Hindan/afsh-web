@@ -51,8 +51,8 @@ const NewsPage = () => {
         { id: 'circulars', label: 'Circulars' },
     ];
 
-    const featuredPost = posts.length > 0 ? posts[0] : null;
-    const remainingPosts = posts.length > 0 ? posts.slice(1) : [];
+    const featuredPost = (Array.isArray(posts) && posts.length > 0) ? posts[0] : null;
+    const remainingPosts = (Array.isArray(posts) && posts.length > 1) ? posts.slice(1) : [];
 
     if (loading) {
         return (

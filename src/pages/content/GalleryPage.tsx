@@ -201,7 +201,11 @@ const GalleryPage = () => {
 
   // --- Derived Data ---
   const years = useMemo(() => {
-    const y = new Set(galleryData.map(p => p.date.split('-')[0]));
+    if (!Array.isArray(galleryData)) return [];
+    const y = new Set(galleryData.map(p => {
+      if (typeof p.date !== 'string') return 'Unknown';
+      return p.date.split('-')[0];
+    }));
     return Array.from(y).sort().reverse();
   }, [galleryData]);
 
@@ -228,17 +232,26 @@ const GalleryPage = () => {
   }, [galleryData, selectedYears, sortOrder, selectedAlbum]);
 
   const albums = useMemo(() => {
+    if (!Array.isArray(galleryData)) return [];
     const groups: Record<string, Photo[]> = {};
     galleryData.forEach(p => {
+      if (!p.album) return;
       if (!groups[p.album]) groups[p.album] = [];
       groups[p.album].push(p);
     });
-    return Object.entries(groups).map(([name, photos]) => ({
-      name,
-      cover: photos[0],
-      count: photos.length,
-      dateRange: `${photos[photos.length - 1]?.date.split('-')[0] || ''} - ${photos[0]?.date.split('-')[0] || ''}`
-    }));
+    return Object.entries(groups).map(([name, photos]) => {
+      const lastDate = photos[photos.length - 1]?.date;
+      const firstDate = photos[0]?.date;
+      const lastYear = typeof lastDate === 'string' ? lastDate.split('-')[0] : '';
+      const firstYear = typeof firstDate === 'string' ? firstDate.split('-')[0] : '';
+
+      return {
+        name,
+        cover: photos[0],
+        count: photos.length,
+        dateRange: `${lastYear} - ${firstYear}`
+      };
+    });
   }, [galleryData]);
 
   const totalPages = Math.ceil(filteredPhotos.length / itemsPerPage);
@@ -260,20 +273,20 @@ const GalleryPage = () => {
     setCurrentPage(1);
   };
 
-  const photosForAlbum = useMemo(() => paginatedPhotos.map(p => ({
-    src: p.src,
-    width: p.width,
-    height: p.height,
-    title: p.title
+  const photosForAlbum = useMemo(() => (Array.isArray(paginatedPhotos) ? paginatedPhotos : []).map(p => ({
+    src: p?.src || '',
+    width: p?.width || 800,
+    height: p?.height || 600,
+    title: p?.title || ''
   })), [paginatedPhotos]);
 
-  const slides = useMemo(() => filteredPhotos.map(p => ({
-    src: p.src,
-    width: p.width,
-    height: p.height,
-    title: p.title,
-    description: `Taken on ${p.date} • ${p.album}`,
-    alt: p.title
+  const slides = useMemo(() => (Array.isArray(filteredPhotos) ? filteredPhotos : []).map(p => ({
+    src: p?.src || '',
+    width: p?.width || 800,
+    height: p?.height || 600,
+    title: p?.title || '',
+    description: `Taken on ${p?.date || 'Unknown'} • ${p?.album || 'General'}`,
+    alt: p?.title || ''
   })), [filteredPhotos]);
 
   return (

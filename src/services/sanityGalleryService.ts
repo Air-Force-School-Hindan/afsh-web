@@ -80,6 +80,8 @@ export async function fetchGalleryData(): Promise<Photo[]> {
   try {
     const rawData = await sanityClient.fetch(PHOTOS_QUERY);
 
+    if (!Array.isArray(rawData)) return MOCK_PHOTOS;
+
     return rawData.map((item: any) => ({
       id: item._id,
       src: item.image?.asset?.url || '', // Fallback or handle null

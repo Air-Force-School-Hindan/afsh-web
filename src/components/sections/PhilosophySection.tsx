@@ -27,7 +27,7 @@ const PhilosophySection: React.FC<PhilosophySectionProps> = ({
     items,
     block
 }) => {
-    const displayItems = items || defaultItems;
+    const displayItems = Array.isArray(items) ? items : defaultItems;
     return (
         <motion.section
             id="academics"
@@ -55,7 +55,7 @@ const PhilosophySection: React.FC<PhilosophySectionProps> = ({
                         <motion.div
                             key={idx}
                             whileHover={{ y: -10 }}
-                            data-tina-field={block ? tinaField(block.items[idx], 'title') : undefined}
+                            data-tina-field={block && Array.isArray(block.items) && block.items[idx] ? tinaField(block.items[idx], 'title') : undefined}
                             // Note: field selection for array items requires passing the specific item object if we want to deep select,
                             // but usually tinaField(block, `items.${idx}`) is complex.
                             // Better to just let them click the main block or use the array UI in sidebar.

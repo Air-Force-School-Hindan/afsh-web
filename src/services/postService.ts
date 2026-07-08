@@ -13,7 +13,7 @@ export const PostService = {
     getAllPosts: async (): Promise<BlogPost[]> => {
         try {
             const response = await apiClient.get<StrapiResponse<BlogPost[]>>(`/api/posts?${POPULATE_ALL}&sort=publishedAt:desc`);
-            return response.data.data;
+            return Array.isArray(response.data?.data) ? response.data.data : [];
         } catch (error) {
             logErrorSecurely('Error fetching all posts', error);
             throw error;
@@ -23,7 +23,7 @@ export const PostService = {
     getLatestPosts: async (limit: number = 3): Promise<BlogPost[]> => {
         try {
             const response = await apiClient.get<StrapiResponse<BlogPost[]>>(`/api/posts?${POPULATE_ALL}&pagination[pageSize]=${limit}&sort[0]=publishedAt:desc`);
-            return response.data.data;
+            return Array.isArray(response.data?.data) ? response.data.data : [];
         } catch (error) {
             logErrorSecurely('Error fetching latest posts', error);
             throw error;
@@ -46,7 +46,7 @@ export const PostService = {
     getRelatedPosts: async (slug: string, limit: number = 3): Promise<BlogPost[]> => {
         try {
             const response = await apiClient.get<StrapiResponse<BlogPost[]>>(`/api/posts?filters[slug][$ne]=${slug}&pagination[pageSize]=${limit}&sort=publishedAt:desc&${POPULATE_ALL}`);
-            return response.data.data;
+            return Array.isArray(response.data?.data) ? response.data.data : [];
         } catch (error) {
             logErrorSecurely('Error fetching related posts', error);
             return [];

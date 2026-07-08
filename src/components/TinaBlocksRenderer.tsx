@@ -12,11 +12,12 @@ interface TinaBlocksRendererProps {
 }
 
 const TinaBlocksRenderer: React.FC<TinaBlocksRendererProps> = ({ blocks }) => {
-  if (!blocks) return null;
+  if (!blocks || !Array.isArray(blocks)) return null;
 
   return (
     <>
       {blocks.map((block, i) => {
+        if (!block) return null;
         // Handle both GraphQL __typename and manual _template (if strictly used in dev without GraphQL)
         let templateName = '';
         if (block.__typename) {

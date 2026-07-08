@@ -20,19 +20,23 @@ export const getStrapiMedia = (url?: string) => {
 export const extractImageUrl = (imageData: any) => {
     if (!imageData) return null;
 
+    // Flatten logic for potential nested attributes (common in Strapi 4 and some Strapi 5 configurations)
+    const data = imageData.data || imageData;
+    const attributes = data.attributes || data;
+
     // Handle Array (Multiple Media)
-    if (Array.isArray(imageData) && imageData.length > 0) {
-        return imageData[0].url;
+    if (Array.isArray(data) && data.length > 0) {
+        return data[0].attributes?.url || data[0].url;
     }
 
     // Handle Object (Single Media)
-    if (typeof imageData === 'object' && imageData.url) {
-        return imageData.url;
+    if (typeof attributes === 'object' && attributes.url) {
+        return attributes.url;
     }
 
-    // Handle Strapi 5 specific 'document' wrapper structure if applicable
-    if (imageData.document && imageData.document.url) {
-        return imageData.document.url;
+    // Handle Strapi 5 specific 'document' wrapper structure
+    if (data.document && data.document.url) {
+        return data.document.url;
     }
 
     return null;

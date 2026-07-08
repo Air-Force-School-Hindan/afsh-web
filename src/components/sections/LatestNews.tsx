@@ -51,7 +51,9 @@ const LatestNews: React.FC<LatestNewsProps> = ({ title, count = 3, block }) => {
     );
   }
 
-  if (posts.length === 0) return null;
+  const displayPosts = Array.isArray(posts) ? posts : [];
+
+  if (displayPosts.length === 0) return null;
 
   return (
     <section className="group bg-white dark:bg-gray-950 transition-colors duration-500 overflow-hidden">
@@ -67,9 +69,9 @@ const LatestNews: React.FC<LatestNewsProps> = ({ title, count = 3, block }) => {
       )}
       <div className="w-full">
         {/* News Grid */}
-        <div className={`grid grid-cols-1 md:grid-cols-${Math.min(posts.length, 3)}`}>
-          {posts.map((item, idx) => (
-            <motion.div
+        <div className={`grid grid-cols-1 md:grid-cols-${Math.min(displayPosts.length, 3)}`}>
+          {displayPosts.map((item, idx) => (
+            item && <motion.div
               key={item.id}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}

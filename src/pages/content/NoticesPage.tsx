@@ -95,7 +95,7 @@ const NoticesPage: React.FC = () => {
                         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Oops! Something went wrong</h2>
                         <p className="text-gray-600 dark:text-gray-400">{error}</p>
                     </div>
-                ) : notices.length === 0 ? (
+                ) : !Array.isArray(notices) || notices.length === 0 ? (
                     <div className="text-center py-20">
                         <p className="text-gray-600 dark:text-gray-400 text-lg">No notices found at the moment.</p>
                     </div>
