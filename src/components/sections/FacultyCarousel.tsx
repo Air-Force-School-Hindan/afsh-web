@@ -99,7 +99,7 @@ const FacultyCard = React.memo(({
 });
 
 const FacultyCarousel: React.FC<FacultyCarouselProps> = ({
-    faculty,
+    faculty: facultyProp,
     autoSlideInterval = 5000
 }) => {
     const displayFaculty = faculty || [];

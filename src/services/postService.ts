@@ -13,7 +13,7 @@ export const PostService = {
     getAllPosts: async (): Promise<BlogPost[]> => {
         try {
             const response = await apiClient.get<StrapiResponse<BlogPost[]>>(`/api/posts?${POPULATE_ALL}&sort=publishedAt:desc`);
-            return response.data.data;
+            return response.data?.data || [];
         } catch (error) {
             logErrorSecurely('Error fetching all posts', error);
             throw error;
@@ -23,7 +23,7 @@ export const PostService = {
     getLatestPosts: async (limit: number = 3): Promise<BlogPost[]> => {
         try {
             const response = await apiClient.get<StrapiResponse<BlogPost[]>>(`/api/posts?${POPULATE_ALL}&pagination[pageSize]=${limit}&sort[0]=publishedAt:desc`);
-            return response.data.data;
+            return response.data?.data || [];
         } catch (error) {
             logErrorSecurely('Error fetching latest posts', error);
             throw error;
