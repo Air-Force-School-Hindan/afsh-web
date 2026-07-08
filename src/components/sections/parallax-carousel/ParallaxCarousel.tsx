@@ -57,10 +57,8 @@ interface ParallaxCarouselProps {
     slides?: ParallaxSlide[];
 }
 
-const ParallaxCarousel: React.FC<ParallaxCarouselProps> = ({ slides: slidesProp }) => {
-    // Sentinel: Use explicit fallbacks to handle null from CMS
-    const slides = slidesProp || defaultSlides;
-
+const ParallaxCarousel: React.FC<ParallaxCarouselProps> = ({ slides }) => {
+    const displaySlides = slides || defaultSlides;
     const [emblaRef, emblaApi] = useEmblaCarousel(OPTIONS);
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
@@ -150,7 +148,7 @@ const ParallaxCarousel: React.FC<ParallaxCarouselProps> = ({ slides: slidesProp 
         <div className="embla-parallax">
             <div className="embla-parallax__viewport" ref={emblaRef}>
                 <div className="embla-parallax__container">
-                    {slides.map((slide, index) => (
+                    {displaySlides.map((slide, index) => (
                         <div className="embla-parallax__slide" key={slide.id}>
                             <div className="embla-parallax__inner">
                                 <div className="embla-parallax__layer">
