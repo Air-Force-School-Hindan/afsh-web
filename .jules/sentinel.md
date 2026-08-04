@@ -16,6 +16,12 @@
 **Learning:** Hardcoding fallbacks to localhost in production code can lead to insecure connection attempts or application failure. Duplicating these fallbacks across multiple files increases maintenance risk.
 **Prevention:** Centralize backend configuration and use environment-aware helpers (e.g., `import.meta.env.DEV`) to ensure secure defaults in production while maintaining development flexibility. Restrict verbose logging to development environments.
 
+## 2026-05-15 - [Security Enhancement] Input Hardening and Secure Error Handling in Alumni Registration
+
+**Vulnerability:** Missing input length limits (potential DoS risk) and potential leakage of technical information through raw error messages in the alumni registration form.
+**Learning:** Standardizing security constraints (maxLength) and using centralized security utilities (getSafeErrorMessage) ensures consistent protection across public-facing components.
+**Prevention:** Always implement client-side input validation for all public forms and wrap UI error states in sanitization helpers to prevent exposing backend implementation details.
+
 ## 2026-04-21 - [Security Enhancement] Implementation of Secure Logging Across Services
 
 **Vulnerability:** Potential information leakage via technical error details (stack traces, raw API errors) when using `console.error` directly in service layer components.
